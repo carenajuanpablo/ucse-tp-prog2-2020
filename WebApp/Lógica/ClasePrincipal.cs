@@ -8,7 +8,7 @@ namespace Lógica
 {
     public class ClasePrincipal
     {
-        List<Institución> instituciones = new List<Institución>();
+        List<Institucion> instituciones = new List<Institucion>();
         List<Hijo> hijos = new List<Hijo>();
         List<Padre> padres = new List<Padre>();
         List<Docente> docentes = new List<Docente>();
@@ -69,7 +69,7 @@ namespace Lógica
 
 
         /// <summary>
-        /// El usuario logueado debe ser una directora del mismo institucion
+        /// El usuario logueado debe ser un director del mismo institucion
         /// </summary>
         /// <param name="directora"></param>
         /// <param name="usuarioLogueado"></param>
@@ -108,7 +108,7 @@ namespace Lógica
         }
 
         /// <summary>
-        /// El usuario logueado debe ser una directora
+        /// El usuario logueado debe ser un director
         /// </summary>
         /// <param name="hijo"></param>
         /// <param name="usuarioLogueado"></param>
@@ -139,43 +139,148 @@ namespace Lógica
             }
             else
             {
-                res.Errores.Add("El usuario logueado no es directora.");
+                res.Errores.Add("El usuario logueado no es director.");
             }
             return res;
         }
 
         /// <summary>
-        /// El usuario logueado debe ser una directora
+        /// El usuario logueado debe ser un director
         /// </summary>
         /// <param name="id"></param>
         /// <param name="hijo"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EditarAlumno(int id, Hijo hijo, UsuarioLogueado usuarioLogueado);
+        Resultado EditarAlumno(int id, Hijo hijo, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Hijo alumnoEditar = ObtenerAlumnoPorId(usuarioLogueado,id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var existe = hijos.First(x => x.ID == alumnoEditar.ID);
+                if (existe != null)
+                {
+                    int indice = hijos.IndexOf(alumnoEditar);
+                    hijos[indice] = hijo;
+                }
+                else
+                {
+                    res.Errores.Add("El alumno que se quiere editar no existe.");
+                }
+              
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
 
         /// <summary>
-        /// El usuario logueado debe ser una directora
+        /// El usuario logueado debe ser un director
         /// </summary>
         /// <param name="id"></param>
         /// <param name="hijo"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EliminarAlumno(int id, Hijo hijo, UsuarioLogueado usuarioLogueado);
+        Resultado EliminarAlumno(int id, Hijo hijo, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Hijo alumnoEliminar = ObtenerAlumnoPorId(usuarioLogueado,id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var existe = hijos.First(x => x.ID == alumnoEliminar.ID);
+                if (existe != null)
+                {
+                    hijos.Remove(alumnoEliminar);
+                }
+                else
+                {
+                    res.Errores.Add("El alumno que se quiere eliminar no existe.");
+                }
+                                           
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
 
         /// <summary>
-        /// El usuario logueado debe ser una directora del mismo institucion
+        /// El usuario logueado debe ser un director del mismo institucion
         /// </summary>
         /// <param name="directora"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EditarDirectora(int id, Directora directora, UsuarioLogueado usuarioLogueado);
+        Resultado EditarDirector(int id, Director director, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Director directorEditar = ObtenerDirectorPorId(usuarioLogueado,id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var existe = directores.First(x => x.ID == directorEditar.ID);
+                if (existe != null)
+                {
+                    //COMPROBAR INSTITUCION
+                    Director directorLogged = usuarioLogueado as Director;
+                    if (directorLogged.Institucion == directorEditar.Institucion)
+                    {
+                        int indice = directores.IndexOf(directorEditar);
+                        directores[indice] = director;
+                    }
+                    else
+                    {
+                        res.Errores.Add("La institucion del director no coincide con la institucion del director a editar.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El director a editar no existe");
+                }
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
         /// <summary>
-        /// El usuario logueado debe ser una directora del mismo institucion
+        /// El usuario logueado debe ser un director del mismo institucion
         /// </summary>
         /// <param name="directora"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EliminarDirectora(int id, Directora directora, UsuarioLogueado usuarioLogueado);
+        Resultado EliminarDirector(int id, Director director, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Director directorEliminar = ObtenerDirectorPorId(usuarioLogueado,id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var existe = directores.First(x => x.ID == directorEliminar.ID);
+                if (existe != null)
+                {
+                    Director directorLogged = usuarioLogueado as Director;
+                    if (directorLogged.Institucion == directorEliminar.Institucion)
+                    {
+                        directores.Remove(directorEliminar);
+                    }
+                    else
+                    {
+                        res.Errores.Add("La institucion del director logueado no coincide con la intitucion del director a eliminar.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El director a eliminar no existe");
+                }     
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
         /// <summary>
         /// Las salas son de la institucion del usuario logueado
         /// </summary>
@@ -194,51 +299,110 @@ namespace Lógica
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
             {
-
-                //COMPROBAR INSTITUCION
-                Director directorLogged = usuarioLogueado as Director;                
-                if (directorLogged.Institucion == docente.Institucion)
+                Director directorLogged = usuarioLogueado as Director;
+                var Existe = docentes.First(x => x.ID == docente.ID);
+                if (Existe==null)
                 {
-                    var Existe = docentes.First(x => x.ID == docente.ID);
-                    if (Existe == null)
-                    {
+                    if (directorLogged.Institucion == docente.Institucion)
+                    {                                             
                         docente.ID = docentes.Count + 1;
-                        docentes.Add(docente);
+                        docentes.Add(docente);                                           
                     }
                     else
                     {
-                        res.Errores.Add("Docente existente");
+                        res.Errores.Add("La institucion no coincide.");
                     }
                 }
                 else
                 {
-                    res.Errores.Add("La institucion no coincide.");
+                    res.Errores.Add("Docente existente.");
                 }
+                
             }
             else
             {
-                res.Errores.Add("El usuario logueado no es directora.");
+                res.Errores.Add("El usuario logueado no es director.");
             }
             return res;
         }
         /// <summary>
-        /// El usuario logueado debe ser una directora del mismo institucion
+        /// El usuario logueado debe ser un director del mismo institucion
         /// </summary>
         /// <param name="id"></param>
         /// <param name="docente"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EditarDocente(int id, Docente docente, UsuarioLogueado usuarioLogueado);
+        Resultado EditarDocente(int id, Docente docente, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Docente docenteEditar = ObtenerDocentePorId(usuarioLogueado,id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                Director directorLogged = usuarioLogueado as Director;
+                var existe = docentes.First(x => x.ID == docenteEditar.ID);
+                if (existe!=null)
+                {
+                    if (directorLogged.Institucion == docenteEditar.Institucion)
+                    {
+                        int indice = docentes.IndexOf(docenteEditar);
+                        docentes[indice] = docente;
+                    }
+                    else
+                    {
+                        res.Errores.Add("La institucion del director no coincide con la del docente a editar.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El docente a editar no existe.");
+                }
+                
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
         /// <summary>
-        /// El usuario logueado debe ser una directora del mismo institucion
+        /// El usuario logueado debe ser un director del mismo institucion
         /// </summary>
         /// <param name="id"></param>
         /// <param name="docente"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EliminarDocente(int id, Docente docente, UsuarioLogueado usuarioLogueado);
+        Resultado EliminarDocente(int id, Docente docente, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Docente docenteEliminar = ObtenerDocentePorId(usuarioLogueado,id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                Director directorLogged = usuarioLogueado as Director;
+                var existe = docentes.First(x => x.ID == docenteEliminar.ID);
+                if (existe != null)
+                {
+                    if (directorLogged.Institucion == docenteEliminar.Institucion)
+                    {
+                        docentes.Remove(docenteEliminar);
+                    }
+                    else
+                    {
+                        res.Errores.Add("La instucion del director no coincide con la del docente.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El docente a eliminar no existe.");
+                }        
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
         /// <summary>
-        /// El usuario debe ser directora del mismo institucion
+        /// El usuario debe ser director del mismo institucion
         /// </summary>
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
@@ -266,27 +430,130 @@ namespace Lógica
             return res;
         }
         /// <summary>
-        /// El usuario debe ser directora del mismo institucion
+        /// El usuario debe ser director del mismo institucion
         /// </summary>
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EditarPadreMadre(int id, Padre padre, UsuarioLogueado usuarioLogueado);
+        Resultado EditarPadreMadre(int id, Padre padre, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Padre padreEditar = ObtenerPadrePorId(usuarioLogueado,id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                Director directorLogged = usuarioLogueado as Director;
+                var existe = padres.First(x => x.ID == padreEditar.ID);
+                if (existe != null)
+                {
+                    bool pertenece = false;
+                    foreach (var item in padreEditar.ListaHijos)
+                    {
+                        if (item.Institucion == directorLogged.Institucion)
+                        {
+                            int indice = padres.IndexOf(padreEditar);
+                            padres[indice] = padre;
+                            pertenece = true;
+                            break;
+                        }
+                    }
+                    if (pertenece == false)
+                    {
+                        res.Errores.Add("La institucion del director no coincide con la del padre a editar.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El padre a editar no existe.");
+                }
+
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
         /// <summary>
-        /// El usuario debe ser directora del mismo institucion
+        /// El usuario debe ser director del mismo institucion
         /// </summary>
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EliminarPadreMadre(int id, Padre padre, UsuarioLogueado usuarioLogueado);
+        Resultado EliminarPadreMadre(int id, Padre padre, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Padre padreEliminar = ObtenerPadrePorId(usuarioLogueado,id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                Director directorLogged = usuarioLogueado as Director;
+                var existe = padres.First(x => x.ID == padreEliminar.ID);
+                if (existe != null)
+                {
+                    bool pertenece = false;
+                    foreach (var item in padreEliminar.ListaHijos)
+                    {
+                        if (item.Institucion == directorLogged.Institucion)
+                        {
+                            padres.Remove(padreEliminar);
+                            pertenece = true;
+                            break;
+                        }
+                    }
+                    if (pertenece == false)
+                    {
+                        res.Errores.Add("La institucion del director no coincide con la del padre.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El padre a editar no existe.");
+                }
+               
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
         /// <summary>
-        /// El usuario debe ser directora, y tanto la sala como el docente deben pertenecer a su institucion.
+        /// El usuario debe ser director, y tanto la sala como el docente deben pertenecer a su institucion.
         /// </summary>
         /// <param name="docente"></param>
         /// <param name="sala"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AsignarDocenteSala(Docente docente, Sala sala, UsuarioLogueado usuarioLogueado);
+        Resultado AsignarDocenteSala(Docente docente, Sala sala, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var existe = docentes.First(x => x.ID == docente.ID);
+                if (existe != null)
+                {
+                    Director directorLogged = usuarioLogueado as Director;
+                    Institucion institucion = directorLogged.Institucion;
+                    if (institucion == docente.Institucion && institucion.Salas.Contains(sala))
+                    {
+                        docente.Salas.Add(sala);
+                    }
+                    else
+                    {
+                        res.Errores.Add("La institucion del director no coincide con la del docente o la sala no pertenece al docente.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El docente no existe.");
+                }
+                
+            }
+            else
+            {
+                res.Errores.Add("EL usuario logueado no es director.");
+            }
+            return res;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -294,15 +561,83 @@ namespace Lógica
         /// <param name="sala"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado DesasignarDocenteSala(Docente docente, Sala sala, UsuarioLogueado usuarioLogueado);
+        Resultado DesasignarDocenteSala(Docente docente, Sala sala, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var existe = docentes.First(x => x.ID == docente.ID);
+                if (existe!=null)
+                {
+                    Director directorLogged = usuarioLogueado as Director;
+                    Institucion institucion = directorLogged.Institucion;
+                    if (institucion == docente.Institucion && docente.Salas.Contains(sala))
+                    {
+                        docente.Salas.Remove(sala);
+                    }
+                    else
+                    {
+                        res.Errores.Add("La institucion del director no coincide con la del docente o la sala no pertenece al docente.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El docente no existe.");
+                }
+               
+            }
+            return res;
+        }
         /// <summary>
-        /// El usuario debe ser directora, y el hijo debe estar asociado a una sala de su institucion
+        /// El usuario debe ser director, y el hijo debe estar asociado a una sala de su institucion
         /// </summary>
         /// <param name="hijo"></param>
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AsignarHijoPadre(Hijo hijo, Padre padre, UsuarioLogueado usuarioLogueado);
+        Resultado AsignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            bool pertenece = false;
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var existe = padres.First(x => x.ID == padre.ID);
+                if (existe != null)
+                {
+                    Director directorLogged = usuarioLogueado as Director;
+                    Institucion institucion = directorLogged.Institucion;
+                    if (padre.ListaHijos.Contains(hijo))
+                    {
+                        foreach (Sala item in institucion.Salas)
+                        {
+                            if (item.alumnos.Contains(hijo))
+                            {
+                                padre.ListaHijos.Add(hijo);
+                                pertenece = true;
+                                break;
+                            }
+                        }
+                        if (pertenece == false)
+                        {
+                            res.Errores.Add("El alumno no pertenece a ninguna sala de la institucion.");
+                        }
+                    }
+                    else
+                    {
+                        res.Errores.Add("El hijo no pertenece al padre del parametro.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El padre no existe.");
+                }
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -310,7 +645,51 @@ namespace Lógica
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado DesasignarHijoPadre(Hijo hijo, Padre padre, UsuarioLogueado usuarioLogueado);
+        Resultado DesasignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            bool pertenece = false;
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var existe = padres.First(x => x.ID == padre.ID);
+                if (existe != null)
+                {
+                    Director directorLogged = usuarioLogueado as Director;
+                    Institucion institucion = directorLogged.Institucion;
+                    if (padre.ListaHijos.Contains(hijo))
+                    {
+                        foreach (Sala item in institucion.Salas)
+                        {
+                            if (item.alumnos.Contains(hijo))
+                            {
+                                padre.ListaHijos.Remove(hijo);
+                                pertenece = true;
+                                break;
+                            }
+                        }
+                        if (pertenece == false)
+                        {
+                            res.Errores.Add("El alumno no pertenece a ninguna sala de la institucion.");
+                        }
+                    }
+                    else
+                    {
+                        res.Errores.Add("El hijo no pertenece al padre del parametro.");
+                    }
+                }
+                else
+                {
+                    res.Errores.Add("El padre no existe.");
+                }
+               
+
+            }
+            else
+            {
+                res.Errores.Add("El usuario loguado no es director.");
+            }
+            return res;
+        }
         /// <summary>
         /// Si el usuario es directora, retornar alumnos de la institucion, si es docente los de sus salas, y si es padre solo sus hijos.
         /// </summary>        
@@ -522,12 +901,12 @@ namespace Lógica
         Grilla<Hijo> ObtenerAlumnos(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
 
         /// <summary>
-        /// Obtener directora por ID
+        /// Obtener director por ID
         /// </summary>
         /// <param name="usuarioLogueado"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        Director ObtenerDirectoraPorId(Usuario usuarioLogueado, int id)
+        Director ObtenerDirectorPorId(Usuario usuarioLogueado, int id)
         {
             return directores.First(x => x.ID == id);
         }

@@ -14,5 +14,6 @@ namespace Lógica
         public string Telefono { get; set; }
         public string Ciudad { get; set; }
         public string Provincia { get; set; }
+        public List<Sala> Salas { get; set; }
     }
 }

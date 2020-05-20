@@ -8,7 +8,7 @@ namespace Lógica
 {
     class Docente : Usuario
     {
-        public Sala[] Salas { get; set; }
+        public List<Sala> Salas { get; set; }
         public Institucion Institucion { get; set; }
     }
 }

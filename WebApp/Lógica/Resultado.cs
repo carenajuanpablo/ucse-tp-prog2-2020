@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lógica
 {
-    class Resultado
+    public class Resultado
     {
         public List<string> Errores;
         public bool EsValido { get { return this.Errores.Count == 0; } }

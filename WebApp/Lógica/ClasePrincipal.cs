@@ -730,85 +730,134 @@ namespace Lógica
             Resultado res = new Resultado { Errores = new List<string>() };
             switch (usuarioLogueado.RolSeleccionado)
             {
+                case Roles.Padre:
+                    {
+                        Padre padre = ConvertirPadre(usuarioLogueado);
+                        if (hijos != null && hijos.Length > 0)
+                        {
+                            foreach (var item in hijos)
+                            {
+                                var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == item.ID);
+                                if (esHijo != null)
+                                {
+                                    var hijo = hijos.Single(x => x.ID == item.ID);
+                                    var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
+
+                                    notasHijo.Add(nota);
+                                }
+                                else
+                                {
+                                    res.Errores.Add($"El alumno no es hijo del padre");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<Hijo> alumnos = new List<Hijo>();
+                            foreach (var sala in salas)
+                            {
+                                alumnos.AddRange(hijos.Where(x => x.Sala.Id == sala.Id));
+                            }
+                            foreach (var item in alumnos)
+                            {
+                                var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == item.ID);
+                                if (esHijo != null)
+                                {
+                                    var notasHijo = item.Notas == null ? new List<Nota>() : item.Notas.ToList();
+                                    notasHijo.Add(nota);
+                                }
+                                else
+                                {
+                                    res.Errores.Add($"El alumno no es hijo del padre");
+                                }
+                            }
+                        }
+                        break;
+                    }
                 case Roles.Profesor:
                     {
                         Docente docente = ConvertirDocente(usuarioLogueado);
-                        //Docente docente = usuarioLogueado as Docente;
-                        if (salas.Length > 0)
+                        if (hijos != null && hijos.Length > 0)
                         {
-                            foreach (Sala sala in salas)
+                            foreach (var item in hijos)
                             {
-                                foreach (Hijo hijo in sala.alumnos)
+                                if (docente.Institucion == item.Institucion)
                                 {
-                                    var Coincide = docente.Salas.FirstOrDefault(x => x.Id == hijo.Sala.Id);
-                                    if (Coincide != null)
-                                    {
-                                        hijo.Notas.Add(nota);
-                                    }
-                                    else
-                                    {
-                                        res.Errores.Add($"El alumno cuyo ID es {hijo.ID} no pertenece a una sala del profesor");
-                                    }
+                                    var hijo = hijos.Single(x => x.ID == item.ID);
+                                    var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
+
+                                    notasHijo.Add(nota);
+                                }
+                                else
+                                {
+                                    res.Errores.Add($"El alumno no pertenece a la misma institución que el docente");
                                 }
                             }
                         }
                         else
                         {
-                            foreach (Hijo hijo in hijos)
+                            List<Hijo> alumnos = new List<Hijo>();
+                            foreach (var sala in salas)
                             {
-                                var Coincide = docente.Salas.FirstOrDefault(x => x.Id == hijo.Sala.Id);
-                                if (Coincide != null)
+                                alumnos.AddRange(hijos.Where(x => x.Sala.Id == sala.Id));
+                            }
+                            foreach (var item in alumnos)
+                            {
+                                if (docente.Institucion == item.Institucion)
                                 {
-                                    hijo.Notas.Add(nota);
+                                    var notasHijo = item.Notas == null ? new List<Nota>() : item.Notas.ToList();
+                                    notasHijo.Add(nota);
                                 }
                                 else
                                 {
-                                    res.Errores.Add($"El alumno cuyo ID es {hijo.ID} no pertenece a una sala del profesor");
-
+                                    res.Errores.Add($"El alumno no pertenece a la misma institución que el docente");
                                 }
                             }
                         }
+                        break;
                     }
-                    break;
                 case Roles.Director:
                     {
                         Director director = ConvertirDirector(usuarioLogueado);
-                        //Director director = usuarioLogueado as Director;
-                        if (salas.Length > 0)
+                        if (hijos != null && hijos.Length > 0)
                         {
-                            foreach (var sala in salas)
+                            foreach (var item in hijos)
                             {
-                                foreach (var hijo in sala.alumnos)
+                                if (director.Institucion == item.Institucion)
                                 {
-                                    if (hijo.Institucion == director.Institucion)
-                                    {
-                                        hijo.Notas.Add(nota);
-                                    }
-                                    else
-                                    {
-                                        res.Errores.Add($"El alumno cuyo ID es {hijo.ID} no pertenece a la institución del Director");
-                                    }
+                                    var hijo = hijos.Single(x => x.ID == item.ID);
+                                    var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
+
+                                    notasHijo.Add(nota);
+                                }
+                                else
+                                {
+                                    res.Errores.Add($"El alumno no pertenece a la misma institución que el director");
                                 }
                             }
                         }
                         else
                         {
-                            foreach (Hijo hijo in hijos)
+                            List<Hijo> alumnos = new List<Hijo>();
+                            foreach (var sala in salas)
                             {
-                                if (hijo.Institucion == director.Institucion)
+                                alumnos.AddRange(hijos.Where(x => x.Sala.Id == sala.Id));
+                            }
+                            foreach (var item in alumnos)
+                            {
+                                if (director.Institucion == item.Institucion)
                                 {
-                                    hijo.Notas.Add(nota);
+                                    var notasHijo = item.Notas == null ? new List<Nota>() : item.Notas.ToList();
+                                    notasHijo.Add(nota);
                                 }
                                 else
                                 {
-                                    res.Errores.Add($"El alumno cuyo ID es {hijo.ID} no pertenece a la institución del Director");
+                                    res.Errores.Add($"El alumno no pertenece a la misma institución que el director");
                                 }
                             }
                         }
-                    }
-                    break;
-                    //case Roles.Padre:
-                    //    break;
+                        break;
+                    }                    
             }
             return res;
         }
@@ -835,7 +884,7 @@ namespace Lógica
                     }
                     else
                     {
-                        res.Errores.Add($"La nota {nota.Id} no corresponde a un alumno del profesor");
+                        res.Errores.Add($"La nota no corresponde a un alumno del profesor");
                     }
                     break;
                 case Roles.Padre:
@@ -849,7 +898,7 @@ namespace Lógica
                     }
                     else
                     {
-                        res.Errores.Add($"La nota {nota.Id} no corresponde a un hijo del usuario logueado");
+                        res.Errores.Add($"La nota no corresponde a un hijo del usuario logueado");
                     }
                     break;
                 case Roles.Director:
@@ -863,7 +912,7 @@ namespace Lógica
                     }
                     else
                     {
-                        res.Errores.Add($"La nota {nota.Id} no corresponde a un alumno de la institución del director");
+                        res.Errores.Add($"La nota no corresponde a un alumno de la institución del director");
                     }
                     break;
             }

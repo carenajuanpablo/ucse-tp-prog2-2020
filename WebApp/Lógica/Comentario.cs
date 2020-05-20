@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lógica
 {
-    class Comentario
+    public class Comentario
     {
         public Usuario Usuario { get; set; }
         public DateTime Fecha { get; set; }

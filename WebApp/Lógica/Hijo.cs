@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lógica
 {
-    class Hijo : Usuario
+    public class Hijo : Usuario
     {
         public Institucion Institucion { get; set; }
         public DateTime FechaNacimiento { get; set; }

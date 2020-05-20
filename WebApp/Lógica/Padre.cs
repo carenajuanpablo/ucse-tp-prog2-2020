@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lógica
 {
-    class Padre : Usuario
+    public class Padre : Usuario
     {
         public List<Hijo> ListaHijos { get; set; }
 

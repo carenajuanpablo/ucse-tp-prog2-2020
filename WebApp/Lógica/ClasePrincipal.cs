@@ -65,8 +65,23 @@ namespace Lógica
         /// Obtiene un listado de instituciones guardada
         /// </summary>
         /// <returns></returns>
-        Institucion[] ObtenerInstituciones();
+        //Institucion[] ObtenerInstituciones();
 
+        public Director ConvertirDirector(Usuario o)
+        {
+            Director dir = o as Director;
+            return o != null ? dir : null;
+        }
+        public Docente ConvertirDocente(Usuario o)
+        {
+            Docente doc = o as Docente;
+            return o != null ? doc : null;
+        }
+        public Padre ConvertirPadre(Usuario o)
+        {
+            Padre pad = o as Padre;
+            return o != null ? pad : null;
+        }
 
         /// <summary>
         /// El usuario logueado debe ser un director del mismo institucion
@@ -287,7 +302,7 @@ namespace Lógica
         /// <param name="institucion"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Sala[] ObtenerSalasPorInstitucion(UsuarioLogueado usuarioLogueado);
+        //Sala[] ObtenerSalasPorInstitucion(UsuarioLogueado usuarioLogueado);
         /// <summary>
         /// El usuario logueado debe ser una directora del mismo institucion
         /// </summary>
@@ -694,14 +709,14 @@ namespace Lógica
         /// Si el usuario es directora, retornar alumnos de la institucion, si es docente los de sus salas, y si es padre solo sus hijos.
         /// </summary>        
         /// <returns></returns>
-        Hijo[] ObtenerPersonas(UsuarioLogueado usuarioLogueado);
+        //Hijo[] ObtenerPersonas(UsuarioLogueado usuarioLogueado);
         /// <summary>
         /// Obtiene las notas de un cuaderno, si el usuario es padre solo puede obtener cuadernos de sus hijos, si es docente de alumnos de sus salas
         /// y si es directora de cualquier alumno de la institucion
         /// </summary>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Nota[] ObtenerCuadernoComunicaciones(int idPersona, UsuarioLogueado usuarioLogueado);
+       // Nota[] ObtenerCuadernoComunicaciones(int idPersona, UsuarioLogueado usuarioLogueado);
         /// <summary>
         /// Alta de una nota, la nota puede estar dirigida a 1 o varias salas, o 1 o varios alumnos. Si el usuario es padre solamente podra enviar a sus hijos.
         /// </summary>
@@ -717,7 +732,8 @@ namespace Lógica
             {
                 case Roles.Profesor:
                     {
-                        Docente docente = usuarioLogueado as Docente;
+                        Docente docente = ConvertirDocente(usuarioLogueado);
+                        //Docente docente = usuarioLogueado as Docente;
                         if (salas.Length > 0)
                         {
                             foreach (Sala sala in salas)
@@ -756,7 +772,8 @@ namespace Lógica
                     break;
                 case Roles.Director:
                     {
-                        Director director = usuarioLogueado as Director;
+                        Director director = ConvertirDirector(usuarioLogueado);
+                        //Director director = usuarioLogueado as Director;
                         if (salas.Length > 0)
                         {
                             foreach (var sala in salas)
@@ -858,7 +875,7 @@ namespace Lógica
         /// <param name="nota"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado MarcarNotaComoLeida(Nota nota, UsuarioLogueado usuarioLogueado);
+        //Resultado MarcarNotaComoLeida(Nota nota, UsuarioLogueado usuarioLogueado);
 
         /// <summary>
         /// Grilla de directoras
@@ -868,7 +885,7 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        Grilla<Directora> ObtenerDirectoras(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
+        //Grilla<Directora> ObtenerDirectoras(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
 
         /// <summary>
         /// Grilla de docentes
@@ -878,7 +895,7 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        Grilla<Docente> ObtenerDocentes(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
+       // Grilla<Docente> ObtenerDocentes(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
 
         /// <summary>
         /// Grilla de padres
@@ -888,7 +905,7 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        Grilla<Padre> ObtenerPadres(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
+       // Grilla<Padre> ObtenerPadres(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
 
         /// <summary>
         /// Grilla de alumnos
@@ -898,7 +915,7 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        Grilla<Hijo> ObtenerAlumnos(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
+       // Grilla<Hijo> ObtenerAlumnos(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
 
         /// <summary>
         /// Obtener director por ID

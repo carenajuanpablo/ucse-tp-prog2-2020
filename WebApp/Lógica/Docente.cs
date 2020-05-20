@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lógica
 {
-    class Docente : Usuario
+    public class Docente : Usuario
     {
         public List<Sala> Salas { get; set; }
         public Institucion Institucion { get; set; }

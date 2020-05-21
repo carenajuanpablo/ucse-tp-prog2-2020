@@ -924,7 +924,31 @@ namespace Lógica
         /// <param name="nota"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        //Resultado MarcarNotaComoLeida(Nota nota, UsuarioLogueado usuarioLogueado);
+        Resultado MarcarNotaComoLeida(Nota nota, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado { Errores = new List<string>() };
+            switch (usuarioLogueado.RolSeleccionado)
+            {
+                case Roles.Profesor:
+                case Roles.Director:
+                    res.Errores.Add("No es usuario Padre");
+                    break;
+                case Roles.Padre:
+                    Padre padre = ConvertirPadre(usuarioLogueado);
+                    var esHijo = padre.ListaHijos.FirstOrDefault(x => x.Notas.Any(y => y.Id == nota.Id));
+                    if (esHijo != null)
+                    {
+                        var NOTA = esHijo.Notas.FirstOrDefault(x => x.Id == nota.Id);
+                        NOTA.Leida = true;
+                    }
+                    else
+                    {
+                        res.Errores.Add("La nota no corresponde a un hijo del padre");
+                    }
+                    break;
+            }
+            return res;
+        }
 
         /// <summary>
         /// Grilla de directoras

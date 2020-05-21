@@ -716,7 +716,17 @@ namespace Lógica
         /// </summary>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-       // Nota[] ObtenerCuadernoComunicaciones(int idPersona, UsuarioLogueado usuarioLogueado);
+        // Nota[] ObtenerCuadernoComunicaciones(int idPersona, UsuarioLogueado usuarioLogueado);
+
+
+
+        public void AgregarNota(Hijo hijo, Nota nota)
+        {
+            var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
+
+            notasHijo.Add(nota);
+        }
+
         /// <summary>
         /// Alta de una nota, la nota puede estar dirigida a 1 o varias salas, o 1 o varios alumnos. Si el usuario es padre solamente podra enviar a sus hijos.
         /// </summary>
@@ -740,10 +750,7 @@ namespace Lógica
                                 var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == item.ID);
                                 if (esHijo != null)
                                 {
-                                    var hijo = hijos.Single(x => x.ID == item.ID);
-                                    var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
-
-                                    notasHijo.Add(nota);
+                                    AgregarNota(esHijo, nota);
                                 }
                                 else
                                 {
@@ -763,8 +770,7 @@ namespace Lógica
                                 var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == item.ID);
                                 if (esHijo != null)
                                 {
-                                    var notasHijo = item.Notas == null ? new List<Nota>() : item.Notas.ToList();
-                                    notasHijo.Add(nota);
+                                    AgregarNota(esHijo, nota);
                                 }
                                 else
                                 {
@@ -783,10 +789,7 @@ namespace Lógica
                             {
                                 if (docente.Institucion == item.Institucion)
                                 {
-                                    var hijo = hijos.Single(x => x.ID == item.ID);
-                                    var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
-
-                                    notasHijo.Add(nota);
+                                    AgregarNota(item, nota);
                                 }
                                 else
                                 {
@@ -805,8 +808,7 @@ namespace Lógica
                             {
                                 if (docente.Institucion == item.Institucion)
                                 {
-                                    var notasHijo = item.Notas == null ? new List<Nota>() : item.Notas.ToList();
-                                    notasHijo.Add(nota);
+                                    AgregarNota(item, nota);
                                 }
                                 else
                                 {
@@ -825,10 +827,7 @@ namespace Lógica
                             {
                                 if (director.Institucion == item.Institucion)
                                 {
-                                    var hijo = hijos.Single(x => x.ID == item.ID);
-                                    var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
-
-                                    notasHijo.Add(nota);
+                                    AgregarNota(item, nota);
                                 }
                                 else
                                 {
@@ -847,8 +846,7 @@ namespace Lógica
                             {
                                 if (director.Institucion == item.Institucion)
                                 {
-                                    var notasHijo = item.Notas == null ? new List<Nota>() : item.Notas.ToList();
-                                    notasHijo.Add(nota);
+                                    AgregarNota(item, nota);
                                 }
                                 else
                                 {

@@ -861,6 +861,15 @@ namespace Lógica
             }
             return res;
         }
+
+
+        public void AgregarComentario(Nota nota, Comentario nuevoComentario)
+        {
+            var comment = nota.Comentarios == null ? new List<Comentario>() : nota.Comentarios.ToList();
+            comment.Add(nuevoComentario);
+            nota.Comentarios = comment.ToArray();
+        }
+
         /// <summary>
         /// Respuesta a una nota. Si es docente la nota debe ser de un alumno de la sala
         /// </summary>
@@ -878,9 +887,7 @@ namespace Lógica
                     var esAlumno = docente.Salas.FirstOrDefault(x => x.alumnos.Any(y => y.Notas.Any(z => z.Id == nota.Id)));
                     if (esAlumno != null)
                     {
-                        var comment = nota.Comentarios == null ? new List<Comentario>() : nota.Comentarios.ToList();
-                        comment.Add(nuevoComentario);
-                        nota.Comentarios = comment.ToArray();
+                        AgregarComentario(nota, nuevoComentario);
                     }
                     else
                     {
@@ -892,9 +899,7 @@ namespace Lógica
                     var esHijo = padre.ListaHijos.First(x => x.Notas.Any(y => y.Id == nota.Id));
                     if (esHijo != null)
                     {
-                        var comment = nota.Comentarios == null ? new List<Comentario>() : nota.Comentarios.ToList();
-                        comment.Add(nuevoComentario);
-                        nota.Comentarios = comment.ToArray();
+                        AgregarComentario(nota, nuevoComentario);
                     }
                     else
                     {
@@ -906,9 +911,7 @@ namespace Lógica
                     var alumno = hijos.First(x => x.Notas.Any(y => y.Id == nota.Id));
                     if (director.Institucion == alumno.Institucion)
                     {
-                        var comment = nota.Comentarios == null ? new List<Comentario>() : nota.Comentarios.ToList();
-                        comment.Add(nuevoComentario);
-                        nota.Comentarios = comment.ToArray();
+                        AgregarComentario(nota, nuevoComentario);
                     }
                     else
                     {

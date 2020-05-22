@@ -54,5 +54,11 @@
     <Compile Include="Resultado.cs" />
     <Compile Include="Usuario.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contratos\Contratos.csproj">
+      <Project>{AFEE4439-32EF-4973-B607-8432A2473F2E}</Project>
+      <Name>Contratos</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

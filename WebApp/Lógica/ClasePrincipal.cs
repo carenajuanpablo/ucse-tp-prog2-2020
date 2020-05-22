@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using Contratos;
 
 namespace Lógica
 {
@@ -1060,7 +1062,16 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        //Grilla<Directora> ObtenerDirectoras(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
+        Grilla<Director> ObtenerDirectores(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
+        {
+            return new Grilla<Director>()
+            {
+                Lista = directores
+                        .Where(x => string.IsNullOrEmpty(busquedaGlobal) || x.Nombre.Contains(busquedaGlobal) || x.Apellido.Contains(busquedaGlobal))
+                        .Skip(paginaActual * totalPorPagina).Take(totalPorPagina).ToArray(),
+                CantidadRegistros = directores.Count
+            };
+        }
 
         /// <summary>
         /// Grilla de docentes
@@ -1070,7 +1081,16 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-       // Grilla<Docente> ObtenerDocentes(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
+        Grilla<Docente> ObtenerDocentes(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
+        {
+            return new Grilla<Docente>()
+            {
+                Lista = docentes
+            .Where(x => string.IsNullOrEmpty(busquedaGlobal) || x.Nombre.Contains(busquedaGlobal) || x.Apellido.Contains(busquedaGlobal))
+            .Skip(paginaActual * totalPorPagina).Take(totalPorPagina).ToArray(),
+                CantidadRegistros = docentes.Count
+            };
+        }
 
         /// <summary>
         /// Grilla de padres
@@ -1080,7 +1100,16 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-       // Grilla<Padre> ObtenerPadres(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
+        Grilla<Padre> ObtenerPadres(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
+        {
+            return new Grilla<Padre>()
+            {
+                Lista = padres
+            .Where(x => string.IsNullOrEmpty(busquedaGlobal) || x.Nombre.Contains(busquedaGlobal) || x.Apellido.Contains(busquedaGlobal))
+            .Skip(paginaActual * totalPorPagina).Take(totalPorPagina).ToArray(),
+                CantidadRegistros = padres.Count
+            };
+         }
 
         /// <summary>
         /// Grilla de alumnos
@@ -1090,7 +1119,16 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-       // Grilla<Hijo> ObtenerAlumnos(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal);
+        Grilla<Hijo> ObtenerAlumnos(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
+        {
+            return new Grilla<Hijo>()
+            {
+                Lista = hijos
+                 .Where(x => string.IsNullOrEmpty(busquedaGlobal) || x.Nombre.Contains(busquedaGlobal) || x.Apellido.Contains(busquedaGlobal))
+                 .Skip(paginaActual * totalPorPagina).Take(totalPorPagina).ToArray(),
+                CantidadRegistros = hijos.Count
+            };
+        }
 
         /// <summary>
         /// Obtener director por ID

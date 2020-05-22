@@ -65,19 +65,22 @@ namespace Lógica
         /// Obtiene un listado de instituciones guardada
         /// </summary>
         /// <returns></returns>
-        //Institucion[] ObtenerInstituciones();
+        Institucion[] ObtenerInstituciones()
+        {
+            return instituciones.ToArray();
+        }
 
-        public Director ConvertirDirector(Usuario o)
+        private Director ConvertirDirector(Usuario o)
         {
             Director dir = o as Director;
             return o != null ? dir : null;
         }
-        public Docente ConvertirDocente(Usuario o)
+        private Docente ConvertirDocente(Usuario o)
         {
             Docente doc = o as Docente;
             return o != null ? doc : null;
         }
-        public Padre ConvertirPadre(Usuario o)
+        private Padre ConvertirPadre(Usuario o)
         {
             Padre pad = o as Padre;
             return o != null ? pad : null;
@@ -94,8 +97,7 @@ namespace Lógica
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
             {
-                //COMPROBAR INSTITUCION
-                Director directorLogged = usuarioLogueado as Director;
+                Director directorLogged = ConvertirDirector(usuarioLogueado);
                 if (directorLogged.Institucion == director.Institucion)
                 {
                     var Existe = directores.First(x => x.ID == director.ID);
@@ -133,7 +135,7 @@ namespace Lógica
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
             {
-                Director directorLogged = usuarioLogueado as Director;
+                Director directorLogged = ConvertirDirector(usuarioLogueado);
                 if (directorLogged.Institucion == hijo.Institucion)
                 {
                     var Existe = hijos.First(x => x.ID == hijo.ID);
@@ -237,8 +239,7 @@ namespace Lógica
                 var existe = directores.First(x => x.ID == directorEditar.ID);
                 if (existe != null)
                 {
-                    //COMPROBAR INSTITUCION
-                    Director directorLogged = usuarioLogueado as Director;
+                    Director directorLogged = ConvertirDirector(usuarioLogueado);
                     if (directorLogged.Institucion == directorEditar.Institucion)
                     {
                         int indice = directores.IndexOf(directorEditar);
@@ -275,14 +276,14 @@ namespace Lógica
                 var existe = directores.First(x => x.ID == directorEliminar.ID);
                 if (existe != null)
                 {
-                    Director directorLogged = usuarioLogueado as Director;
+                    Director directorLogged = ConvertirDirector(usuarioLogueado);
                     if (directorLogged.Institucion == directorEliminar.Institucion)
                     {
                         directores.Remove(directorEliminar);
                     }
                     else
                     {
-                        res.Errores.Add("La institucion del director logueado no coincide con la intitucion del director a eliminar.");
+                        res.Errores.Add("La institucion no coincide.");
                     }
                 }
                 else
@@ -302,7 +303,9 @@ namespace Lógica
         /// <param name="institucion"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        //Sala[] ObtenerSalasPorInstitucion(UsuarioLogueado usuarioLogueado);
+        //Sala[] ObtenerSalasPorInstitucion(Usuario usuarioLogueado);
+
+
         /// <summary>
         /// El usuario logueado debe ser una directora del mismo institucion
         /// </summary>
@@ -314,7 +317,7 @@ namespace Lógica
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
             {
-                Director directorLogged = usuarioLogueado as Director;
+                Director directorLogged = ConvertirDirector(usuarioLogueado);
                 var Existe = docentes.First(x => x.ID == docente.ID);
                 if (Existe==null)
                 {
@@ -353,7 +356,7 @@ namespace Lógica
             Docente docenteEditar = ObtenerDocentePorId(usuarioLogueado,id);
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
             {
-                Director directorLogged = usuarioLogueado as Director;
+                Director directorLogged = ConvertirDirector(usuarioLogueado);
                 var existe = docentes.First(x => x.ID == docenteEditar.ID);
                 if (existe!=null)
                 {
@@ -392,7 +395,7 @@ namespace Lógica
             Docente docenteEliminar = ObtenerDocentePorId(usuarioLogueado,id);
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
             {
-                Director directorLogged = usuarioLogueado as Director;
+                Director directorLogged = ConvertirDirector(usuarioLogueado);
                 var existe = docentes.First(x => x.ID == docenteEliminar.ID);
                 if (existe != null)
                 {
@@ -456,7 +459,7 @@ namespace Lógica
             Padre padreEditar = ObtenerPadrePorId(usuarioLogueado,id);
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
             {
-                Director directorLogged = usuarioLogueado as Director;
+                Director directorLogged = ConvertirDirector(usuarioLogueado);
                 var existe = padres.First(x => x.ID == padreEditar.ID);
                 if (existe != null)
                 {
@@ -500,7 +503,7 @@ namespace Lógica
             Padre padreEliminar = ObtenerPadrePorId(usuarioLogueado,id);
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
             {
-                Director directorLogged = usuarioLogueado as Director;
+                Director directorLogged = ConvertirDirector(usuarioLogueado);
                 var existe = padres.First(x => x.ID == padreEliminar.ID);
                 if (existe != null)
                 {
@@ -546,7 +549,7 @@ namespace Lógica
                 var existe = docentes.First(x => x.ID == docente.ID);
                 if (existe != null)
                 {
-                    Director directorLogged = usuarioLogueado as Director;
+                    Director directorLogged = ConvertirDirector(usuarioLogueado);
                     Institucion institucion = directorLogged.Institucion;
                     if (institucion == docente.Institucion && institucion.Salas.Contains(sala))
                     {
@@ -584,7 +587,7 @@ namespace Lógica
                 var existe = docentes.First(x => x.ID == docente.ID);
                 if (existe!=null)
                 {
-                    Director directorLogged = usuarioLogueado as Director;
+                    Director directorLogged = ConvertirDirector(usuarioLogueado);
                     Institucion institucion = directorLogged.Institucion;
                     if (institucion == docente.Institucion && docente.Salas.Contains(sala))
                     {
@@ -619,7 +622,7 @@ namespace Lógica
                 var existe = padres.First(x => x.ID == padre.ID);
                 if (existe != null)
                 {
-                    Director directorLogged = usuarioLogueado as Director;
+                    Director directorLogged = ConvertirDirector(usuarioLogueado);
                     Institucion institucion = directorLogged.Institucion;
                     if (padre.ListaHijos.Contains(hijo))
                     {
@@ -669,7 +672,7 @@ namespace Lógica
                 var existe = padres.First(x => x.ID == padre.ID);
                 if (existe != null)
                 {
-                    Director directorLogged = usuarioLogueado as Director;
+                    Director directorLogged = ConvertirDirector(usuarioLogueado);
                     Institucion institucion = directorLogged.Institucion;
                     if (padre.ListaHijos.Contains(hijo))
                     {
@@ -709,7 +712,23 @@ namespace Lógica
         /// Si el usuario es directora, retornar alumnos de la institucion, si es docente los de sus salas, y si es padre solo sus hijos.
         /// </summary>        
         /// <returns></returns>
-        //Hijo[] ObtenerPersonas(UsuarioLogueado usuarioLogueado);
+        Hijo[] ObtenerPersonas(Usuario usuarioLogueado)
+        {          
+            switch (usuarioLogueado.RolSeleccionado)
+            {
+                case Roles.Profesor:
+                    Docente docente = ConvertirDocente(usuarioLogueado);
+                    return hijos.Where(x => docente.Salas.Contains(x.Sala)).ToArray();                  
+                case Roles.Padre:
+                    Padre padre = ConvertirPadre(usuarioLogueado);
+                    return padre.ListaHijos.ToArray();                   
+                case Roles.Director:
+                    Director director = ConvertirDirector(usuarioLogueado);
+                    return hijos.Where(x => x.Institucion == director.Institucion).ToArray();
+                default:
+                    throw new Exception("Rol no implementado");
+            }
+        }
         /// <summary>
         /// Obtiene las notas de un cuaderno, si el usuario es padre solo puede obtener cuadernos de sus hijos, si es docente de alumnos de sus salas
         /// y si es directora de cualquier alumno de la institucion

@@ -303,8 +303,25 @@ namespace Lógica
         /// <param name="institucion"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        //Sala[] ObtenerSalasPorInstitucion(Usuario usuarioLogueado);
-
+       
+        Sala[] ObtenerSalasPorInstitucion(Usuario usuarioLogueado)
+        {
+            List<Sala> salas = new List<Sala>();
+            switch (usuarioLogueado.RolSeleccionado)
+            {
+                case Roles.Profesor:
+                    Docente docente = ConvertirDocente(usuarioLogueado);
+                    salas = docente.Salas;
+                    break;
+                case Roles.Padre:
+                    throw new Exception("Inaccesible.");
+                case Roles.Director:
+                    Director director = ConvertirDirector(usuarioLogueado);
+                    salas = director.Institucion.Salas;
+                    break;
+            }
+            return salas.ToArray();
+        }
 
         /// <summary>
         /// El usuario logueado debe ser una directora del mismo institucion

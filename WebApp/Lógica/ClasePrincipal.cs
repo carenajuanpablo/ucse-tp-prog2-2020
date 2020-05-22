@@ -735,11 +735,76 @@ namespace Lógica
         /// </summary>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        // Nota[] ObtenerCuadernoComunicaciones(int idPersona, UsuarioLogueado usuarioLogueado);
+        Nota[] ObtenerCuadernoComunicaciones(int idPersona, Usuario usuarioLogueado)
+        {
+            List<Nota> nota = new List<Nota>();
+            var alumno = hijos.FirstOrDefault(x => x.ID == idPersona);
+            if (alumno != null)
+            {
+                switch (usuarioLogueado.RolSeleccionado)
+                {
+                    case Roles.Profesor:
+                        {
+                            Docente docente = ConvertirDocente(usuarioLogueado);
+                            var Coincide = docente.Salas.FirstOrDefault(x => x.alumnos.Any(y => y.ID == idPersona));
+                            if (Coincide != null)
+                            {
+                                foreach (var item in alumno.Notas)
+                                {
+                                    nota.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Alumno no pertenece a un aula del profesor");
+                            }
+                            break;
+                        }
+                    case Roles.Padre:
+                        {
+                            Padre padre = ConvertirPadre(usuarioLogueado);
+                            var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == idPersona);
+                            if (esHijo != null)
+                            {
+                                foreach (var item in esHijo.Notas)
+                                {
+                                    nota.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("No es hijo del padre");
+                            }
+                            break;
+                        }
+                    case Roles.Director:
+                        {
+                            Director director = ConvertirDirector(usuarioLogueado);
+                            if (director.Institucion == alumno.Institucion)
+                            {
+                                foreach (var item in alumno.Notas)
+                                {
+                                    nota.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("No pertenece a la misma institución que el director");
+                            }
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                throw new Exception("Alumno inexistente");
+            }
+            return nota.ToArray();
+        }
 
 
 
-        public void AgregarNota(Hijo hijo, Nota nota)
+        public void GuardarNota(Hijo hijo, Nota nota)
         {
             var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
 
@@ -769,7 +834,7 @@ namespace Lógica
                                 var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == item.ID);
                                 if (esHijo != null)
                                 {
-                                    AgregarNota(esHijo, nota);
+                                    GuardarNota(esHijo, nota);
                                 }
                                 else
                                 {
@@ -789,7 +854,7 @@ namespace Lógica
                                 var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == item.ID);
                                 if (esHijo != null)
                                 {
-                                    AgregarNota(esHijo, nota);
+                                    GuardarNota(esHijo, nota);
                                 }
                                 else
                                 {
@@ -808,7 +873,7 @@ namespace Lógica
                             {
                                 if (docente.Institucion == item.Institucion)
                                 {
-                                    AgregarNota(item, nota);
+                                    GuardarNota(item, nota);
                                 }
                                 else
                                 {
@@ -827,7 +892,7 @@ namespace Lógica
                             {
                                 if (docente.Institucion == item.Institucion)
                                 {
-                                    AgregarNota(item, nota);
+                                    GuardarNota(item, nota);
                                 }
                                 else
                                 {
@@ -846,7 +911,7 @@ namespace Lógica
                             {
                                 if (director.Institucion == item.Institucion)
                                 {
-                                    AgregarNota(item, nota);
+                                    GuardarNota(item, nota);
                                 }
                                 else
                                 {
@@ -865,7 +930,7 @@ namespace Lógica
                             {
                                 if (director.Institucion == item.Institucion)
                                 {
-                                    AgregarNota(item, nota);
+                                    GuardarNota(item, nota);
                                 }
                                 else
                                 {

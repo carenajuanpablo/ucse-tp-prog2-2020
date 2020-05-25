@@ -15,6 +15,18 @@ namespace Lógica
         List<Padre> padres = new List<Padre>();
         List<Docente> docentes = new List<Docente>();
         List<Director> directores = new List<Director>();
+
+        public delegate void ABMPadreHandler(ABMPadreArgs contexto);
+        public event ABMPadreHandler ABMPadre;
+
+        public class ABMPadreArgs : EventArgs
+        {
+            public ABMPadreArgs(Padre padre)
+            {
+                PADRE = padre;
+            }
+            public Padre PADRE { get; set; }
+        }
         /// <summary>
         /// Nombre de los integrantes del grupo de trabajo
         /// </summary>
@@ -521,6 +533,7 @@ namespace Lógica
                 {
                     padre.ID = padres.Count + 1;
                     padres.Add(padre);
+                    ABMPadre(new ABMPadreArgs(padre));
                 }
                 else
                 {
@@ -556,6 +569,7 @@ namespace Lógica
                         {
                             int indice = padres.IndexOf(padreEditar);
                             padres[indice] = padre;
+                            ABMPadre(new ABMPadreArgs(padre));
                             pertenece = true;
                             break;
                         }
@@ -599,6 +613,7 @@ namespace Lógica
                         if (item.Institucion == directorLogged.Institucion)
                         {
                             padres.Remove(padreEliminar);
+                            ABMPadre(new ABMPadreArgs(padre));
                             pertenece = true;
                             break;
                         }

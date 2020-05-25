@@ -88,6 +88,73 @@ namespace Lógica
             return o != null ? pad : null;
         }
 
+        Resultado AltaInstitucion(Institucion institucion, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                var Existe = instituciones.First(x => x.Id == institucion.Id);
+                if (Existe == null)
+                {
+                    institucion.Id = instituciones.Count + 1;
+                    instituciones.Add(institucion);
+                }
+                else
+                {
+                    res.Errores.Add("Institución existente");
+                }
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
+        Resultado EditarInstitucion(int id, Institucion institucion, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Institucion InstitucionEditar = ObtenerInstitucionPorId(usuarioLogueado, id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                if (InstitucionEditar != null)
+                {
+                    int indice = instituciones.IndexOf(InstitucionEditar);
+                    instituciones[indice] = institucion;
+                }
+                else
+                {
+                    res.Errores.Add("La institución a editar no existe");
+                }
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
+        Resultado EliminarInstitucion(int id, Institucion institución, Usuario usuarioLogueado)
+        {
+            Resultado res = new Resultado();
+            Institucion InstitucionEliminar = ObtenerInstitucionPorId(usuarioLogueado, id);
+            if (usuarioLogueado.RolSeleccionado == Roles.Director)
+            {
+                if (InstitucionEliminar != null)
+                {
+                    instituciones.Remove(InstitucionEliminar);
+                }
+                else
+                {
+                    res.Errores.Add("La institución a eliminar no existe");
+                }
+            }
+            else
+            {
+                res.Errores.Add("El usuario logueado no es director.");
+            }
+            return res;
+        }
+
+
         /// <summary>
         /// El usuario logueado debe ser un director del mismo institucion
         /// </summary>
@@ -1172,6 +1239,11 @@ namespace Lógica
         Hijo ObtenerAlumnoPorId(Usuario usuarioLogueado, int id)
         {
             return hijos.First(x => x.ID == id);
+        }
+
+        Institucion ObtenerInstitucionPorId(Usuario usuarioLogueado, int id)
+        {
+            return instituciones.First(x => x.Id == id);
         }
     }
 }

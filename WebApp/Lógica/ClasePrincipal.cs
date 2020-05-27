@@ -5,16 +5,202 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Contratos;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Lógica
 {
     public class ClasePrincipal
     {
-        List<Institucion> instituciones = new List<Institucion>();
-        List<Hijo> hijos = new List<Hijo>();
-        List<Padre> padres = new List<Padre>();
-        List<Docente> docentes = new List<Docente>();
-        List<Director> directores = new List<Director>();
+        readonly string pathListaDeInstituciones = Path.GetFullPath("c:\\ListaDeInstituciones.txt");
+        readonly string pathListaDeHijos = Path.GetFullPath("c:\\ListaDeHijos.txt");
+        readonly string pathListaDePadres = Path.GetFullPath("c:\\ListaDePadres.txt");
+        readonly string pathListaDeDocentes = Path.GetFullPath("c:\\ListaDeDocentes.txt");
+        readonly string pathListaDeDirectores = Path.GetFullPath("c:\\ListaDeDirectores.txt");
+
+
+        List<Institucion> instituciones { get; set; }
+        List<Hijo> hijos { get; set; }
+        List<Padre> padres { get; set; }
+        List<Docente> docentes { get; set; }
+        List<Director> directores { get; set; }
+
+        public ClasePrincipal()
+        {
+            instituciones = LeerListaDeInstituciones();
+            hijos = LeerListaDeHijos();
+            padres = LeerListaDePadres();
+            docentes = LeerListaDeDocentes();
+            directores = LeerListaDeDirectores();
+        }
+
+        public List<Institucion> LeerListaDeInstituciones()
+        {
+            if (!File.Exists(pathListaDeInstituciones))
+            {
+                TextWriter archivo = new StreamWriter(pathListaDeInstituciones);
+                List<Institucion> Lista = new List<Institucion>();
+                archivo.Close();
+                return Lista;
+            }
+            else
+            {
+                using (StreamReader archivo = new StreamReader(pathListaDeInstituciones))
+                {
+                    string JsonContenido = archivo.ReadToEnd();
+                    List<Institucion> Lista = JsonConvert.DeserializeObject<List<Institucion>>(JsonContenido);
+
+                    archivo.Close();
+
+                    if (Lista == null)
+                        Lista = new List<Institucion>();
+                    return Lista;
+                }
+            }
+        }
+        public List<Hijo> LeerListaDeHijos()
+        {
+            if (!File.Exists(pathListaDeHijos))
+            {
+                TextWriter archivo = new StreamWriter(pathListaDeHijos);
+                List<Hijo> Lista = new List<Hijo>();
+                archivo.Close();
+                return Lista;
+            }
+            else
+            {
+                using (StreamReader archivo = new StreamReader(pathListaDeHijos))
+                {
+                    string JsonContenido = archivo.ReadToEnd();
+                    List<Hijo> Lista = JsonConvert.DeserializeObject<List<Hijo>>(JsonContenido);
+
+                    archivo.Close();
+
+                    if (Lista == null)
+                        Lista = new List<Hijo>();
+                    return Lista;
+                }
+            }
+        }
+        public List<Padre> LeerListaDePadres()
+        {
+            if (!File.Exists(pathListaDeHijos))
+            {
+                TextWriter archivo = new StreamWriter(pathListaDePadres);
+                List<Padre> Lista = new List<Padre>();
+                archivo.Close();
+                return Lista;
+            }
+            else
+            {
+                using (StreamReader archivo = new StreamReader(pathListaDePadres))
+                {
+                    string JsonContenido = archivo.ReadToEnd();
+                    List<Padre> Lista = JsonConvert.DeserializeObject<List<Padre>>(JsonContenido);
+
+                    archivo.Close();
+
+                    if (Lista == null)
+                        Lista = new List<Padre>();
+                    return Lista;
+                }
+            }
+        }
+        public List<Docente> LeerListaDeDocentes()
+        {
+            if (!File.Exists(pathListaDeHijos))
+            {
+                TextWriter archivo = new StreamWriter(pathListaDeDocentes);
+                List<Docente> Lista = new List<Docente>();
+                archivo.Close();
+                return Lista;
+            }
+            else
+            {
+                using (StreamReader archivo = new StreamReader(pathListaDeDocentes))
+                {
+                    string JsonContenido = archivo.ReadToEnd();
+                    List<Docente> Lista = JsonConvert.DeserializeObject<List<Docente>>(JsonContenido);
+
+                    archivo.Close();
+
+                    if (Lista == null)
+                        Lista = new List<Docente>();
+                    return Lista;
+                }
+            }
+        }
+        public List<Director> LeerListaDeDirectores()
+        {
+            if (!File.Exists(pathListaDeHijos))
+            {
+                TextWriter archivo = new StreamWriter(pathListaDeDirectores);
+                List<Director> Lista = new List<Director>();
+                archivo.Close();
+                return Lista;
+            }
+            else
+            {
+                using (StreamReader archivo = new StreamReader(pathListaDeDirectores))
+                {
+                    string JsonContenido = archivo.ReadToEnd();
+                    List<Director> Lista = JsonConvert.DeserializeObject<List<Director>>(JsonContenido);
+
+                    archivo.Close();
+
+                    if (Lista == null)
+                        Lista = new List<Director>();
+                    return Lista;
+                }
+            }
+        }
+
+        public void ActualizarArchivo(string msg)
+        {
+            switch (msg)
+            {
+                case "Institucion":
+                    using (StreamWriter archivo = new StreamWriter(pathListaDeInstituciones))
+                    {
+                        string JsonContenido = JsonConvert.SerializeObject(instituciones);
+                        archivo.Write(JsonContenido);
+                        archivo.Close();
+                    }
+                    break;
+                case "Director":
+                    using (StreamWriter archivo = new StreamWriter(pathListaDeDirectores))
+                    {
+                        string JsonContenido = JsonConvert.SerializeObject(directores);
+                        archivo.Write(JsonContenido);
+                        archivo.Close();
+                    }
+                    break;
+                case "Padre":
+                    using (StreamWriter archivo = new StreamWriter(pathListaDePadres))
+                    {
+                        string JsonContenido = JsonConvert.SerializeObject(padres);
+                        archivo.Write(JsonContenido);
+                        archivo.Close();
+                    }
+                    break;
+                case "Docente":
+                    using (StreamWriter archivo = new StreamWriter(pathListaDeDocentes))
+                    {
+                        string JsonContenido = JsonConvert.SerializeObject(docentes);
+                        archivo.Write(JsonContenido);
+                        archivo.Close();
+                    }
+                    break;
+                case "Hijo":
+                    using (StreamWriter archivo = new StreamWriter(pathListaDeHijos))
+                    {
+                        string JsonContenido = JsonConvert.SerializeObject(hijos);
+                        archivo.Write(JsonContenido);
+                        archivo.Close();
+                    }
+                    break;
+            }
+        }
 
         public delegate void ABMUsuarioHandler(ABMUsuarioArgs contexto);
         public event ABMUsuarioHandler ABMUsuario;
@@ -140,6 +326,7 @@ namespace Lógica
             return o != null ? pad : null;
         }
 
+
         Resultado AltaInstitucion(Institucion institucion, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
@@ -150,6 +337,7 @@ namespace Lógica
                 {
                     institucion.Id = instituciones.Count + 1;
                     instituciones.Add(institucion);
+                    ActualizarArchivo("Institucion");
                 }
                 else
                 {
@@ -172,6 +360,7 @@ namespace Lógica
                 {
                     int indice = instituciones.IndexOf(InstitucionEditar);
                     instituciones[indice] = institucion;
+                    ActualizarArchivo("Institucion");
                 }
                 else
                 {
@@ -193,6 +382,7 @@ namespace Lógica
                 if (InstitucionEliminar != null)
                 {
                     instituciones.Remove(InstitucionEliminar);
+                    ActualizarArchivo("Institucion");
                 }
                 else
                 {
@@ -226,6 +416,7 @@ namespace Lógica
                     {
                         director.ID = directores.Count + 1;
                         directores.Add(director);
+                        ActualizarArchivo("Director");
                         ABMUsuario(new ABMUsuarioArgs(director));
                     }
                     else
@@ -265,6 +456,7 @@ namespace Lógica
                     {
                         hijo.ID = hijos.Count + 1;
                         hijos.Add(hijo);
+                        ActualizarArchivo("Hijo");
                         ABMUsuario(new ABMUsuarioArgs(hijo));
                     }
                     else
@@ -302,6 +494,7 @@ namespace Lógica
                 {
                     int indice = hijos.IndexOf(alumnoEditar);
                     hijos[indice] = hijo;
+                    ActualizarArchivo("Hijo");
                     ABMUsuario(new ABMUsuarioArgs(hijo));
                 }
                 else
@@ -334,6 +527,7 @@ namespace Lógica
                 if (existe != null)
                 {
                     hijos.Remove(alumnoEliminar);
+                    ActualizarArchivo("HIjo");
                     ABMUsuario(new ABMUsuarioArgs(hijo));
                 }
                 else
@@ -369,6 +563,7 @@ namespace Lógica
                     {
                         int indice = directores.IndexOf(directorEditar);
                         directores[indice] = director;
+                        ActualizarArchivo("Director");
                         ABMUsuario(new ABMUsuarioArgs(director));
                     }
                     else
@@ -406,6 +601,7 @@ namespace Lógica
                     if (directorLogged.Institucion == directorEliminar.Institucion)
                     {
                         directores.Remove(directorEliminar);
+                        ActualizarArchivo("Director");
                         ABMUsuario(new ABMUsuarioArgs(director));
                     }
                     else
@@ -469,6 +665,7 @@ namespace Lógica
                     {                                             
                         docente.ID = docentes.Count + 1;
                         docentes.Add(docente);
+                        ActualizarArchivo("Docente");
                         ABMUsuario(new ABMUsuarioArgs(docente));
                     }
                     else
@@ -509,6 +706,7 @@ namespace Lógica
                     {
                         int indice = docentes.IndexOf(docenteEditar);
                         docentes[indice] = docente;
+                        ActualizarArchivo("Docente");
                         ABMUsuario(new ABMUsuarioArgs(docente));
                     }
                     else
@@ -548,6 +746,7 @@ namespace Lógica
                     if (directorLogged.Institucion == docenteEliminar.Institucion)
                     {
                         docentes.Remove(docenteEliminar);
+                        ActualizarArchivo("Docente");
                         ABMUsuario(new ABMUsuarioArgs(docente));
                     }
                     else
@@ -582,6 +781,7 @@ namespace Lógica
                 {
                     padre.ID = padres.Count + 1;
                     padres.Add(padre);
+                    ActualizarArchivo("Padre");
                     ABMUsuario(new ABMUsuarioArgs(padre));
                 }
                 else
@@ -618,6 +818,7 @@ namespace Lógica
                         {
                             int indice = padres.IndexOf(padreEditar);
                             padres[indice] = padre;
+                            ActualizarArchivo("Padre");
                             ABMUsuario(new ABMUsuarioArgs(padre));
                             pertenece = true;
                             break;
@@ -662,6 +863,7 @@ namespace Lógica
                         if (item.Institucion == directorLogged.Institucion)
                         {
                             padres.Remove(padreEliminar);
+                            ActualizarArchivo("Padre");
                             ABMUsuario(new ABMUsuarioArgs(padre));
                             pertenece = true;
                             break;
@@ -704,6 +906,7 @@ namespace Lógica
                     if (institucion == docente.Institucion && institucion.Salas.Contains(sala))
                     {
                         docente.Salas.Add(sala);
+                        ActualizarArchivo("Docente");
                     }
                     else
                     {
@@ -742,6 +945,7 @@ namespace Lógica
                     if (institucion == docente.Institucion && docente.Salas.Contains(sala))
                     {
                         docente.Salas.Remove(sala);
+                        ActualizarArchivo("Docente");
                     }
                     else
                     {
@@ -781,6 +985,7 @@ namespace Lógica
                             if (item.alumnos.Contains(hijo))
                             {
                                 padre.ListaHijos.Add(hijo);
+                                ActualizarArchivo("Padre");
                                 pertenece = true;
                                 break;
                             }
@@ -831,6 +1036,7 @@ namespace Lógica
                             if (item.alumnos.Contains(hijo))
                             {
                                 padre.ListaHijos.Remove(hijo);
+                                ActualizarArchivo("Padre");
                                 pertenece = true;
                                 break;
                             }
@@ -960,6 +1166,7 @@ namespace Lógica
 
             notasHijo.Add(nota);
             ALTANota(new ALTANotaArgs(hijo,nota));
+            ActualizarArchivo("Hijo");
         }
 
         /// <summary>
@@ -1100,6 +1307,7 @@ namespace Lógica
         {
             var comment = nota.Comentarios == null ? new List<Comentario>() : nota.Comentarios.ToList();
             comment.Add(nuevoComentario);
+            ActualizarArchivo("Hijo");
             ALTAComentario(new ALTAComentarioArgs(nuevoComentario, nota));
             nota.Comentarios = comment.ToArray();
         }
@@ -1177,6 +1385,8 @@ namespace Lógica
                     {
                         var NOTA = esHijo.Notas.FirstOrDefault(x => x.Id == nota.Id);
                         NOTA.Leida = true;
+                        ActualizarArchivo("Hijo");
+
                     }
                     else
                     {

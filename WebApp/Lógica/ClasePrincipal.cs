@@ -202,56 +202,56 @@ namespace Lógica
             }
         }
 
-        public delegate void ABMUsuarioHandler(ABMUsuarioArgs contexto);
-        public event ABMUsuarioHandler ABMUsuario;
+        public delegate void AbmUsuarioHandler(AbmUsuarioArgs contexto);
+        public event AbmUsuarioHandler AbmUsuario;
 
-        public class ABMUsuarioArgs : EventArgs
+        public class AbmUsuarioArgs : EventArgs
         {
-            public ABMUsuarioArgs(Padre padre)
+            public AbmUsuarioArgs(Padre padre)
             {
-                USUARIO = padre;
+                Usuario = padre;
             }
-            public ABMUsuarioArgs(Director director)
+            public AbmUsuarioArgs(Director director)
             {
-                USUARIO = director;
+                Usuario = director;
             }
-            public ABMUsuarioArgs(Docente docente)
+            public AbmUsuarioArgs(Docente docente)
             {
-                USUARIO = docente;
+                Usuario = docente;
             }
-            public ABMUsuarioArgs(Hijo hijo)
+            public AbmUsuarioArgs(Hijo hijo)
             {
-                USUARIO = hijo;
+                Usuario = hijo;
             }
-            public Usuario USUARIO { get; set; }
+            public Usuario Usuario { get; set; }
         }
 
-        public delegate void ALTANotaHandler(ALTANotaArgs contexto);
-        public event ALTANotaHandler ALTANota;
+        public delegate void AltaNotaHandler(AltaNotaArgs contexto);
+        public event AltaNotaHandler AltNota;
 
-        public class ALTANotaArgs : EventArgs
+        public class AltaNotaArgs : EventArgs
         {
-            public ALTANotaArgs(Hijo hijo, Nota nota)
+            public AltaNotaArgs(Hijo hijo, Nota nota)
             {
-                HIJO = hijo;
-                NOTA = nota;
+                Hijo = hijo;
+                Nota = nota;
             }
-            public Hijo HIJO { get; set; }
-            public Nota NOTA { get; set; }
+            public Hijo Hijo { get; set; }
+            public Nota Nota { get; set; }
         }
 
-        public delegate void ALTAComentarioHandler(ALTAComentarioArgs contexto);
-        public event ALTAComentarioHandler ALTAComentario;
+        public delegate void AltaComentarioHandler(AltaComentarioArgs contexto);
+        public event AltaComentarioHandler AltComentario;
 
-        public class ALTAComentarioArgs : EventArgs
+        public class AltaComentarioArgs : EventArgs
         {
-            public ALTAComentarioArgs(Comentario comentario, Nota nota)
+            public AltaComentarioArgs(Comentario comentario, Nota nota)
             {
-                COMENTARIO = comentario;
-                NOTA = nota;
+                Comentario = comentario;
+                Nota = nota;
             }
-            public Comentario COMENTARIO { get; set; }
-            public Nota NOTA { get; set; }
+            public Comentario Comentario { get; set; }
+            public Nota Nota { get; set; }
         }
         /// <summary>
         /// Nombre de los integrantes del grupo de trabajo
@@ -417,7 +417,7 @@ namespace Lógica
                         director.ID = directores.Count + 1;
                         directores.Add(director);
                         ActualizarArchivo("Director");
-                        ABMUsuario(new ABMUsuarioArgs(director));
+                        AbmUsuario(new AbmUsuarioArgs(director));
                     }
                     else
                     {
@@ -457,7 +457,7 @@ namespace Lógica
                         hijo.ID = hijos.Count + 1;
                         hijos.Add(hijo);
                         ActualizarArchivo("Hijo");
-                        ABMUsuario(new ABMUsuarioArgs(hijo));
+                        AbmUsuario(new AbmUsuarioArgs(hijo));
                     }
                     else
                     {
@@ -495,7 +495,7 @@ namespace Lógica
                     int indice = hijos.IndexOf(alumnoEditar);
                     hijos[indice] = hijo;
                     ActualizarArchivo("Hijo");
-                    ABMUsuario(new ABMUsuarioArgs(hijo));
+                    AbmUsuario(new AbmUsuarioArgs(hijo));
                 }
                 else
                 {
@@ -528,7 +528,7 @@ namespace Lógica
                 {
                     hijos.Remove(alumnoEliminar);
                     ActualizarArchivo("HIjo");
-                    ABMUsuario(new ABMUsuarioArgs(hijo));
+                    AbmUsuario(new AbmUsuarioArgs(hijo));
                 }
                 else
                 {
@@ -564,7 +564,7 @@ namespace Lógica
                         int indice = directores.IndexOf(directorEditar);
                         directores[indice] = director;
                         ActualizarArchivo("Director");
-                        ABMUsuario(new ABMUsuarioArgs(director));
+                        AbmUsuario(new AbmUsuarioArgs(director));
                     }
                     else
                     {
@@ -602,7 +602,7 @@ namespace Lógica
                     {
                         directores.Remove(directorEliminar);
                         ActualizarArchivo("Director");
-                        ABMUsuario(new ABMUsuarioArgs(director));
+                        AbmUsuario(new AbmUsuarioArgs(director));
                     }
                     else
                     {
@@ -666,7 +666,7 @@ namespace Lógica
                         docente.ID = docentes.Count + 1;
                         docentes.Add(docente);
                         ActualizarArchivo("Docente");
-                        ABMUsuario(new ABMUsuarioArgs(docente));
+                        AbmUsuario(new AbmUsuarioArgs(docente));
                     }
                     else
                     {
@@ -707,7 +707,7 @@ namespace Lógica
                         int indice = docentes.IndexOf(docenteEditar);
                         docentes[indice] = docente;
                         ActualizarArchivo("Docente");
-                        ABMUsuario(new ABMUsuarioArgs(docente));
+                        AbmUsuario(new AbmUsuarioArgs(docente));
                     }
                     else
                     {
@@ -747,7 +747,7 @@ namespace Lógica
                     {
                         docentes.Remove(docenteEliminar);
                         ActualizarArchivo("Docente");
-                        ABMUsuario(new ABMUsuarioArgs(docente));
+                        AbmUsuario(new AbmUsuarioArgs(docente));
                     }
                     else
                     {
@@ -782,7 +782,7 @@ namespace Lógica
                     padre.ID = padres.Count + 1;
                     padres.Add(padre);
                     ActualizarArchivo("Padre");
-                    ABMUsuario(new ABMUsuarioArgs(padre));
+                    AbmUsuario(new AbmUsuarioArgs(padre));
                 }
                 else
                 {
@@ -819,7 +819,7 @@ namespace Lógica
                             int indice = padres.IndexOf(padreEditar);
                             padres[indice] = padre;
                             ActualizarArchivo("Padre");
-                            ABMUsuario(new ABMUsuarioArgs(padre));
+                            AbmUsuario(new AbmUsuarioArgs(padre));
                             pertenece = true;
                             break;
                         }
@@ -864,7 +864,7 @@ namespace Lógica
                         {
                             padres.Remove(padreEliminar);
                             ActualizarArchivo("Padre");
-                            ABMUsuario(new ABMUsuarioArgs(padre));
+                            AbmUsuario(new AbmUsuarioArgs(padre));
                             pertenece = true;
                             break;
                         }
@@ -1165,7 +1165,7 @@ namespace Lógica
             var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
 
             notasHijo.Add(nota);
-            ALTANota(new ALTANotaArgs(hijo,nota));
+            AltNota(new AltaNotaArgs(hijo,nota));
             ActualizarArchivo("Hijo");
         }
 
@@ -1308,7 +1308,7 @@ namespace Lógica
             var comment = nota.Comentarios == null ? new List<Comentario>() : nota.Comentarios.ToList();
             comment.Add(nuevoComentario);
             ActualizarArchivo("Hijo");
-            ALTAComentario(new ALTAComentarioArgs(nuevoComentario, nota));
+            AltComentario(new AltaComentarioArgs(nuevoComentario, nota));
             nota.Comentarios = comment.ToArray();
         }
 

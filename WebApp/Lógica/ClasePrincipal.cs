@@ -327,7 +327,7 @@ namespace Lógica
         }
 
 
-        Resultado AltaInstitucion(Institucion institucion, Usuario usuarioLogueado)
+        public Resultado AltaInstitucion(Institucion institucion, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
@@ -350,7 +350,7 @@ namespace Lógica
             }
             return res;
         }
-        Resultado EditarInstitucion(int id, Institucion institucion, Usuario usuarioLogueado)
+        public Resultado EditarInstitucion(int id, Institucion institucion, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Institucion InstitucionEditar = ObtenerInstitucionPorId(usuarioLogueado, id);
@@ -373,7 +373,7 @@ namespace Lógica
             }
             return res;
         }
-        Resultado EliminarInstitucion(int id, Institucion institución, Usuario usuarioLogueado)
+        public Resultado EliminarInstitucion(int id, Institucion institución, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Institucion InstitucionEliminar = ObtenerInstitucionPorId(usuarioLogueado, id);
@@ -403,7 +403,7 @@ namespace Lógica
         /// <param name="directora"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AltaDirector(Director director, Usuario usuarioLogueado)
+        public Resultado AltaDirector(Director director, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
@@ -443,7 +443,7 @@ namespace Lógica
         /// <param name="hijo"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AltaAlumno(Hijo hijo, Usuario usuarioLogueado)
+        public Resultado AltaAlumno(Hijo hijo, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
@@ -483,7 +483,7 @@ namespace Lógica
         /// <param name="hijo"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EditarAlumno(int id, Hijo hijo, Usuario usuarioLogueado)
+        public Resultado EditarAlumno(int id, Hijo hijo, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Hijo alumnoEditar = ObtenerAlumnoPorId(usuarioLogueado,id);
@@ -517,7 +517,7 @@ namespace Lógica
         /// <param name="hijo"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EliminarAlumno(int id, Hijo hijo, Usuario usuarioLogueado)
+        public Resultado EliminarAlumno(int id, Hijo hijo, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Hijo alumnoEliminar = ObtenerAlumnoPorId(usuarioLogueado,id);
@@ -549,7 +549,7 @@ namespace Lógica
         /// <param name="directora"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EditarDirector(int id, Director director, Usuario usuarioLogueado)
+        public Resultado EditarDirector(int id, Director director, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Director directorEditar = ObtenerDirectorPorId(usuarioLogueado,id);
@@ -588,7 +588,7 @@ namespace Lógica
         /// <param name="directora"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EliminarDirector(int id, Director director, Usuario usuarioLogueado)
+        public Resultado EliminarDirector(int id, Director director, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Director directorEliminar = ObtenerDirectorPorId(usuarioLogueado,id);
@@ -626,8 +626,8 @@ namespace Lógica
         /// <param name="institucion"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-       
-        Sala[] ObtenerSalasPorInstitucion(Usuario usuarioLogueado)
+
+        public Sala[] ObtenerSalasPorInstitucion(Usuario usuarioLogueado)
         {
             List<Sala> salas = new List<Sala>();
             switch (usuarioLogueado.RolSeleccionado)
@@ -652,7 +652,7 @@ namespace Lógica
         /// <param name="docente"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AltaDocente(Docente docente, Usuario usuarioLogueado)
+        public Resultado AltaDocente(Docente docente, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
@@ -692,7 +692,7 @@ namespace Lógica
         /// <param name="docente"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EditarDocente(int id, Docente docente, Usuario usuarioLogueado)
+        public Resultado EditarDocente(int id, Docente docente, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Docente docenteEditar = ObtenerDocentePorId(usuarioLogueado,id);
@@ -733,7 +733,7 @@ namespace Lógica
         /// <param name="docente"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EliminarDocente(int id, Docente docente, Usuario usuarioLogueado)
+        public Resultado EliminarDocente(int id, Docente docente, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Docente docenteEliminar = ObtenerDocentePorId(usuarioLogueado,id);
@@ -771,7 +771,7 @@ namespace Lógica
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AltaPadreMadre(Padre padre, Usuario usuarioLogueado)
+        public Resultado AltaPadreMadre(Padre padre, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
@@ -801,7 +801,7 @@ namespace Lógica
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EditarPadreMadre(int id, Padre padre, Usuario usuarioLogueado)
+        public Resultado EditarPadreMadre(int id, Padre padre, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Padre padreEditar = ObtenerPadrePorId(usuarioLogueado,id);
@@ -847,7 +847,7 @@ namespace Lógica
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado EliminarPadreMadre(int id, Padre padre, Usuario usuarioLogueado)
+        public Resultado EliminarPadreMadre(int id, Padre padre, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             Padre padreEliminar = ObtenerPadrePorId(usuarioLogueado,id);
@@ -893,7 +893,7 @@ namespace Lógica
         /// <param name="sala"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AsignarDocenteSala(Docente docente, Sala sala, Usuario usuarioLogueado)
+        public Resultado AsignarDocenteSala(Docente docente, Sala sala, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
@@ -932,7 +932,7 @@ namespace Lógica
         /// <param name="sala"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado DesasignarDocenteSala(Docente docente, Sala sala, Usuario usuarioLogueado)
+        public Resultado DesasignarDocenteSala(Docente docente, Sala sala, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Director)
@@ -967,7 +967,7 @@ namespace Lógica
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AsignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
+        public Resultado AsignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             bool pertenece = false;
@@ -1018,7 +1018,7 @@ namespace Lógica
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado DesasignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
+        public Resultado DesasignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
             bool pertenece = false;
@@ -1068,7 +1068,7 @@ namespace Lógica
         /// Si el usuario es directora, retornar alumnos de la institucion, si es docente los de sus salas, y si es padre solo sus hijos.
         /// </summary>        
         /// <returns></returns>
-        Hijo[] ObtenerPersonas(Usuario usuarioLogueado)
+        public Hijo[] ObtenerPersonas(Usuario usuarioLogueado)
         {          
             switch (usuarioLogueado.RolSeleccionado)
             {
@@ -1091,7 +1091,7 @@ namespace Lógica
         /// </summary>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Nota[] ObtenerCuadernoComunicaciones(int idPersona, Usuario usuarioLogueado)
+        public Nota[] ObtenerCuadernoComunicaciones(int idPersona, Usuario usuarioLogueado)
         {
             List<Nota> nota = new List<Nota>();
             var alumno = hijos.FirstOrDefault(x => x.ID == idPersona);
@@ -1177,7 +1177,7 @@ namespace Lógica
         /// <param name="hijos"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado AltaNota(Nota nota, Sala[] salas, Hijo[] hijos, Usuario usuarioLogueado)
+        public Resultado AltaNota(Nota nota, Sala[] salas, Hijo[] hijos, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado { Errores = new List<string>() };
             switch (usuarioLogueado.RolSeleccionado)
@@ -1319,7 +1319,7 @@ namespace Lógica
         /// <param name="nuevoComentario"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado ResponderNota(Nota nota, Comentario nuevoComentario, Usuario usuarioLogueado)
+        public Resultado ResponderNota(Nota nota, Comentario nuevoComentario, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado { Errores = new List<string>() };
             switch (usuarioLogueado.RolSeleccionado)
@@ -1369,7 +1369,7 @@ namespace Lógica
         /// <param name="nota"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
-        Resultado MarcarNotaComoLeida(Nota nota, Usuario usuarioLogueado)
+        public Resultado MarcarNotaComoLeida(Nota nota, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado { Errores = new List<string>() };
             switch (usuarioLogueado.RolSeleccionado)
@@ -1405,7 +1405,7 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        Grilla<Director> ObtenerDirectores(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
+        public Grilla<Director> ObtenerDirectores(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
         {
             return new Grilla<Director>()
             {
@@ -1424,7 +1424,7 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        Grilla<Docente> ObtenerDocentes(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
+        public Grilla<Docente> ObtenerDocentes(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
         {
             return new Grilla<Docente>()
             {
@@ -1443,7 +1443,7 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        Grilla<Padre> ObtenerPadres(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
+        public Grilla<Padre> ObtenerPadres(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
         {
             return new Grilla<Padre>()
             {
@@ -1462,7 +1462,7 @@ namespace Lógica
         /// <param name="totalPorPagina"></param>
         /// <param name="busquedaGlobal"></param>
         /// <returns></returns>
-        Grilla<Hijo> ObtenerAlumnos(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
+        public Grilla<Hijo> ObtenerAlumnos(Usuario usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
         {
             return new Grilla<Hijo>()
             {
@@ -1479,7 +1479,7 @@ namespace Lógica
         /// <param name="usuarioLogueado"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        Director ObtenerDirectorPorId(Usuario usuarioLogueado, int id)
+        public Director ObtenerDirectorPorId(Usuario usuarioLogueado, int id)
         {
             return directores.First(x => x.ID == id);
         }
@@ -1490,7 +1490,7 @@ namespace Lógica
         /// <param name="usuarioLogueado"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        Docente ObtenerDocentePorId(Usuario usuarioLogueado, int id)
+        public Docente ObtenerDocentePorId(Usuario usuarioLogueado, int id)
         {
             return docentes.First(x => x.ID == id);
         }
@@ -1501,7 +1501,7 @@ namespace Lógica
         /// <param name="usuarioLogueado"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        Padre ObtenerPadrePorId(Usuario usuarioLogueado, int id)
+        public Padre ObtenerPadrePorId(Usuario usuarioLogueado, int id)
         {
             return padres.First(x => x.ID == id);
         }
@@ -1512,12 +1512,12 @@ namespace Lógica
         /// <param name="usuarioLogueado"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        Hijo ObtenerAlumnoPorId(Usuario usuarioLogueado, int id)
+        public Hijo ObtenerAlumnoPorId(Usuario usuarioLogueado, int id)
         {
             return hijos.First(x => x.ID == id);
         }
 
-        Institucion ObtenerInstitucionPorId(Usuario usuarioLogueado, int id)
+        public Institucion ObtenerInstitucionPorId(Usuario usuarioLogueado, int id)
         {
             return instituciones.First(x => x.Id == id);
         }

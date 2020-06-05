@@ -257,7 +257,7 @@ namespace Lógica
         /// Nombre de los integrantes del grupo de trabajo
         /// </summary>
         /// <returns></returns>
-        string ObtenerNombreGrupo()
+        public string ObtenerNombreGrupo()
         {
             return $"Integrantes: Pedro Fassanelli - Juan Pablo Carena";
         }
@@ -527,7 +527,7 @@ namespace Lógica
                 if (existe != null)
                 {
                     hijos.Remove(alumnoEliminar);
-                    ActualizarArchivo("HIjo");
+                    ActualizarArchivo("Hijo");
                     AbmUsuario(new AbmUsuarioArgs(hijo));
                 }
                 else

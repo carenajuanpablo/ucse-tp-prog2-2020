@@ -12,15 +12,14 @@ namespace Servicios
     {
         private static ClasePrincipal ClasePrincipal = new ClasePrincipal();
 
-        public Contratos.Resultado AltaAlumno(Contratos.Hijo hijo, UsuarioLogueado usuarioLogueado)
+        public Contratos.Resultado AltaAlumno(Contratos.Hijo hijo, Contratos.UsuarioLogueado usuarioLogueado)
         {
-            //metodos de extension
-            return ClasePrincipal.AltaAlumno(hijo,usuarioLogueado);
+            return Transformaciones.MétodosExtensión.ConvertirResultado(ClasePrincipal.AltaAlumno(Transformaciones.MétodosExtensión.ConvertirHijo(hijo), Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado)));
         }
 
         public Contratos.Resultado AltaDirectora(Directora directora, UsuarioLogueado usuarioLogueado)
         {
-            return ClasePrincipal.AltaDirector(directora, usuarioLogueado);
+            throw new NotImplementedException();
         }
 
         public Contratos.Resultado AltaDocente(Contratos.Docente docente, UsuarioLogueado usuarioLogueado)

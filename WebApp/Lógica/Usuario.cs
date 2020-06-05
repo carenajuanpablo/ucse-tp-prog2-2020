@@ -8,7 +8,7 @@ namespace Lógica
 {
     public enum Roles
     {
-        Profesor, Padre, Director
+        Padre, Directora, Docente
     }
     public class Usuario
     {
@@ -17,7 +17,7 @@ namespace Lógica
             public string Apellido { get; set; }
             public string Email { get; set; }
             public string Contraseña { get; set; }
-            public Roles Roles { get; set; }
+            public Roles[] Roles { get; set; }
             public bool Activo { get; set; }
 
             public Roles RolSeleccionado { get; set; }

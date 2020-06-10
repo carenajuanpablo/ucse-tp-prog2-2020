@@ -12,11 +12,11 @@ namespace Lógica
 {
     public class ClasePrincipal
     {
-        readonly string pathListaDeInstituciones = Path.GetFullPath("c:\\ListaDeInstituciones.txt");
-        readonly string pathListaDeHijos = Path.GetFullPath("c:\\ListaDeHijos.txt");
-        readonly string pathListaDePadres = Path.GetFullPath("c:\\ListaDePadres.txt");
-        readonly string pathListaDeDocentes = Path.GetFullPath("c:\\ListaDeDocentes.txt");
-        readonly string pathListaDeDirectores = Path.GetFullPath("c:\\ListaDeDirectores.txt");
+        readonly string pathListaDeInstituciones = Path.GetFullPath("c:\\TP2020\\ListaDeInstituciones.txt");
+        readonly string pathListaDeHijos = Path.GetFullPath("c:\\TP2020\\ListaDeHijos.txt");
+        readonly string pathListaDePadres = Path.GetFullPath("c:\\TP2020\\ListaDePadres.txt");
+        readonly string pathListaDeDocentes = Path.GetFullPath("c:\\TP2020\\ListaDeDocentes.txt");
+        readonly string pathListaDeDirectores = Path.GetFullPath("c:\\TP2020\\ListaDeDirectores.txt");
 
 
         List<Institucion> instituciones { get; set; }
@@ -32,6 +32,7 @@ namespace Lógica
             padres = LeerListaDePadres();
             docentes = LeerListaDeDocentes();
             directores = LeerListaDeDirectores();
+            Director dir = new Director() { ID = 1, Nombre = "A 1", Apellido = "B", Email = "C", Cargo = "D" , Contraseña = "123"};
         }
 
         public List<Institucion> LeerListaDeInstituciones()

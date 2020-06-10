@@ -284,7 +284,7 @@ namespace Lógica
         /// <param name="email"></param>
         /// <param name="clave"></param>
         /// <returns></returns>
-        Usuario ObtenerUsuario(string email, string clave)
+        public Usuario ObtenerUsuario(string email, string clave)
         {
             List<Usuario> Usuarios = ObtenerUsuarios();
             Usuario UsuarioEncontrado = null;

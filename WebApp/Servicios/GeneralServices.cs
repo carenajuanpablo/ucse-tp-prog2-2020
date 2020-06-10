@@ -148,7 +148,7 @@ namespace Servicios
 
         public Contratos.Padre ObtenerPadrePorId(UsuarioLogueado usuarioLogueado, int id)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirPadre(ClasePrincipal.ObtenerPadrePorId(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado), id));
         }
 
         public Grilla<Contratos.Padre> ObtenerPadres(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
@@ -165,7 +165,7 @@ namespace Servicios
         {
             throw new NotImplementedException();
         }
-
+        
         public UsuarioLogueado ObtenerUsuario(string email, string clave)
         {
             throw new NotImplementedException();

@@ -305,7 +305,7 @@ namespace Lógica
         /// Obtiene un listado de instituciones guardada
         /// </summary>
         /// <returns></returns>
-        Institucion[] ObtenerInstituciones()
+        public Institucion[] ObtenerInstituciones()
         {
             return instituciones.ToArray();
         }

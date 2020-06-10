@@ -69,6 +69,15 @@ namespace Servicios.Transformaciones
 
             return Sala;
         }
+        public static Contratos.Sala[] ConvertirSalas(Lógica.Sala[] salas)
+        {
+            Contratos.Sala[] Salas = new Contratos.Sala[salas.Length];
+            for (int i = 0; i < salas.Length; i++)
+            {
+                Salas[i] = ConvertirSala(salas[i]);
+            }
+            return Salas;
+        }
         public static Padre ConvertirPadre(Contratos.Padre padre)
         {
             Padre Padre = new Padre();
@@ -180,7 +189,16 @@ namespace Servicios.Transformaciones
             Hijo.Notas = Notas;
             return Hijo;
         }
-        
+        public static Contratos.Hijo[] ConvertirHijos(Lógica.Hijo[] hijos)
+        {
+            Contratos.Hijo[] Hijos = new Contratos.Hijo[hijos.Length];
+            for (int i = 0; i < hijos.Length; i++)
+            {
+                Hijos[i] = ConvertirHijo(hijos[i]);
+            }
+            return Hijos;
+        }
+
         public static Institucion ConvertirInstitución(Contratos.Institucion institucion)
         {
             Institucion Institución = new Institucion();
@@ -206,6 +224,15 @@ namespace Servicios.Transformaciones
             //FALTA LISTA DE SALAS
 
             return Institución;
+        }
+        public static Contratos.Institucion[] ConvertirInstituciones(Lógica.Institucion[] instituciones)
+        {
+            Contratos.Institucion[] Instituciones = new Contratos.Institucion[instituciones.Length];
+            for (int i = 0; i < instituciones.Length; i++)
+            {
+                Instituciones[i] = ConvertirInstitución(instituciones[i]);
+            }
+            return Instituciones;
         }
         public static Usuario ConvertirUsuario(Contratos.Usuario usuario)
         {

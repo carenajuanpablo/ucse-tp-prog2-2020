@@ -151,7 +151,7 @@ namespace Servicios
 
         public Contratos.Institucion[] ObtenerInstituciones()
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirInstituciones(ClasePrincipal.ObtenerInstituciones());
         }
 
         public string ObtenerNombreGrupo()
@@ -171,13 +171,14 @@ namespace Servicios
 
         public Contratos.Hijo[] ObtenerPersonas(UsuarioLogueado usuarioLogueado)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirHijos(ClasePrincipal.ObtenerPersonas(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado)));
         }
 
         public Contratos.Sala[] ObtenerSalasPorInstitucion(UsuarioLogueado usuarioLogueado)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirSalas(ClasePrincipal.ObtenerSalasPorInstitucion(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado)));
         }
+
         
         public UsuarioLogueado ObtenerUsuario(string email, string clave)
         {

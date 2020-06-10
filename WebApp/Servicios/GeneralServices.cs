@@ -121,7 +121,8 @@ namespace Servicios
 
         public Grilla<Contratos.Hijo> ObtenerAlumnos(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirGrillaHijos(ClasePrincipal.ObtenerAlumnos(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado), paginaActual, totalPorPagina, busquedaGlobal));
+
         }
 
         public Contratos.Nota[] ObtenerCuadernoComunicaciones(int idPersona, UsuarioLogueado usuarioLogueado)
@@ -142,7 +143,7 @@ namespace Servicios
 
         public Grilla<Directora> ObtenerDirectoras(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirGrillaDirectores(ClasePrincipal.ObtenerDirectores(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado), paginaActual, totalPorPagina, busquedaGlobal));
         }
 
         public Contratos.Docente ObtenerDocentePorId(UsuarioLogueado usuarioLogueado, int id)
@@ -152,7 +153,7 @@ namespace Servicios
 
         public Grilla<Contratos.Docente> ObtenerDocentes(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirGrillaDocentes(ClasePrincipal.ObtenerDocentes(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado), paginaActual, totalPorPagina, busquedaGlobal));
         }
 
         public Contratos.Institucion[] ObtenerInstituciones()
@@ -172,7 +173,8 @@ namespace Servicios
 
         public Grilla<Contratos.Padre> ObtenerPadres(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirGrillaPadres(ClasePrincipal.ObtenerPadres(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado), paginaActual, totalPorPagina, busquedaGlobal));
+
         }
 
         public Contratos.Hijo[] ObtenerPersonas(UsuarioLogueado usuarioLogueado)

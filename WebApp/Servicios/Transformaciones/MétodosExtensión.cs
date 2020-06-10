@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contratos;
 using Lógica;
 
 
@@ -10,9 +11,9 @@ namespace Servicios.Transformaciones
 {
     public static class MétodosExtensión
     {
-        public static Director ConvertirDirector(Contratos.Directora director)
+        public static Lógica.Director ConvertirDirector(Contratos.Directora director)
         {
-            Director Director = new Director();
+            Lógica.Director Director = new Lógica.Director();
             Director.Institucion = ConvertirInstitución(director.Institucion);
             Director.Cargo = director.Cargo;
             Director.FechaIngreso = director.FechaIngreso;
@@ -27,10 +28,10 @@ namespace Servicios.Transformaciones
             Director.FechaIngreso = director.FechaIngreso;
             return Director;
         }
-        public static Docente ConvertirDocente(Contratos.Docente docente)
+        public static Lógica.Docente ConvertirDocente(Contratos.Docente docente)
         {
-            Docente Docente = new Docente();
-            List<Sala> salas = new List<Sala>();
+            Lógica.Docente Docente = new Lógica.Docente();
+            List<Lógica.Sala> salas = new List<Lógica.Sala>();
             foreach (var item in docente.Salas)
             {
                 salas.Add(ConvertirSala(item));
@@ -51,9 +52,9 @@ namespace Servicios.Transformaciones
             Docente.Salas = salas;
             return Docente;
         }
-        public static Sala ConvertirSala(Contratos.Sala sala)
+        public static Lógica.Sala ConvertirSala(Contratos.Sala sala)
         {
-            Sala Sala = new Sala();
+            Lógica.Sala Sala = new Lógica.Sala();
             Sala.Id = sala.Id;
             Sala.Nombre = sala.Nombre;
             //FALTA LISTA ALUMNOS
@@ -78,10 +79,10 @@ namespace Servicios.Transformaciones
             }
             return Salas;
         }
-        public static Padre ConvertirPadre(Contratos.Padre padre)
+        public static Lógica.Padre ConvertirPadre(Contratos.Padre padre)
         {
-            Padre Padre = new Padre();
-            List<Hijo> hijos = new List<Hijo>();
+            Lógica.Padre Padre = new Lógica.Padre();
+            List<Lógica.Hijo> hijos = new List<Lógica.Hijo>();
             foreach (var item in padre.Hijos)
             {
                 hijos.Add(ConvertirHijo(item));
@@ -95,7 +96,7 @@ namespace Servicios.Transformaciones
             Contratos.Padre Padre = new Contratos.Padre();
             Contratos.Hijo[] Hijos = new Contratos.Hijo[padre.ListaHijos.Count];
             int i = 0;
-            foreach (Hijo item in padre.ListaHijos)
+            foreach (var item in padre.ListaHijos)
             {
                 Hijos[i] = ConvertirHijo(item);
                 i++;
@@ -103,15 +104,15 @@ namespace Servicios.Transformaciones
             Padre.Hijos = Hijos;
             return Padre;
         }
-        public static Nota ConvertirNota(Contratos.Nota nota)
+        public static Lógica.Nota ConvertirNota(Contratos.Nota nota)
         {
-            Nota Nota = new Nota();
+            Lógica.Nota Nota = new Lógica.Nota();
             Nota.Id = nota.Id;
             Nota.Titulo = nota.Titulo;
             Nota.Descripcion = nota.Descripcion;
             Nota.FechaEventoAsociado = nota.FechaEventoAsociado;
             Nota.Leida = nota.Leida;
-            Comentario[] comentarios = new Comentario[nota.Comentarios.Length];
+            Lógica.Comentario[] comentarios = new Lógica.Comentario[nota.Comentarios.Length];
             for (int i = 0; i < nota.Comentarios.Length; i++)
             {
                 comentarios[i] = ConvertirComentario(nota.Comentarios[i]);
@@ -137,9 +138,9 @@ namespace Servicios.Transformaciones
 
             return Nota;
         }
-        public static Comentario ConvertirComentario(Contratos.Comentario comentario)
+        public static Lógica.Comentario ConvertirComentario(Contratos.Comentario comentario)
         {
-            Comentario Comentario = new Comentario();
+            Lógica.Comentario Comentario = new Lógica.Comentario();
             Comentario.Usuario = ConvertirUsuario(comentario.Usuario);
             Comentario.Fecha = comentario.Fecha;
             Comentario.Mensaje = comentario.Mensaje;
@@ -156,14 +157,14 @@ namespace Servicios.Transformaciones
 
             return Comentario;
         }
-        public static Hijo ConvertirHijo(Contratos.Hijo hijo)
+        public static Lógica.Hijo ConvertirHijo(Contratos.Hijo hijo)
         {
-            Hijo Hijo = new Hijo();
+            Lógica.Hijo Hijo = new Lógica.Hijo();
             Hijo.Institucion = ConvertirInstitución(hijo.Institucion);
             Hijo.FechaNacimiento = hijo.FechaNacimiento;
             Hijo.ResultadoUltimaEvaluacionAnual = hijo.ResultadoUltimaEvaluacionAnual;
             Hijo.Sala = ConvertirSala(hijo.Sala);
-            List<Nota> notas = new List<Nota>();
+            List<Lógica.Nota> notas = new List<Lógica.Nota>();
             foreach (var item in hijo.Notas)
             {
                 notas.Add(ConvertirNota(item));
@@ -199,9 +200,9 @@ namespace Servicios.Transformaciones
             return Hijos;
         }
 
-        public static Institucion ConvertirInstitución(Contratos.Institucion institucion)
+        public static Lógica.Institucion ConvertirInstitución(Contratos.Institucion institucion)
         {
-            Institucion Institución = new Institucion();
+            Lógica.Institucion Institución = new Lógica.Institucion();
             Institución.Id = institucion.Id;
             Institución.Nombre = institucion.Nombre;
             Institución.Direccion = institucion.Direccion;
@@ -234,9 +235,9 @@ namespace Servicios.Transformaciones
             }
             return Instituciones;
         }
-        public static Usuario ConvertirUsuario(Contratos.Usuario usuario)
+        public static Lógica.Usuario ConvertirUsuario(Contratos.Usuario usuario)
         {
-            Usuario Usuario = new Usuario();
+            Lógica.Usuario Usuario = new Lógica.Usuario();
             Usuario.ID = usuario.Id;
             Usuario.Nombre = usuario.Nombre;
             Usuario.Apellido = usuario.Apellido;
@@ -244,14 +245,14 @@ namespace Servicios.Transformaciones
 
             return Usuario;
         }
-        public static Usuario ConvertirUsuario(Contratos.UsuarioLogueado usuario)
+        public static Lógica.Usuario ConvertirUsuario(Contratos.UsuarioLogueado usuario)
         {
-            Usuario Usuario = new Usuario();
+            Lógica.Usuario Usuario = new Lógica.Usuario();
             Usuario.Nombre = usuario.Nombre;
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
             Usuario.Roles = ConvertirRoles(usuario);
-            Usuario.RolSeleccionado = (Roles)usuario.RolSeleccionado;
+            Usuario.RolSeleccionado = (Lógica.Roles)usuario.RolSeleccionado;
             return Usuario;
         }
         
@@ -263,8 +264,57 @@ namespace Servicios.Transformaciones
             Usuario.Email = usuario.Email;
             //REVISAR ROLES
             return Usuario;
+        }        
+        public static Contratos.Grilla<Directora> ConvertirGrillaDirectores(Grilla<Director> directores)
+        {
+            Contratos.Grilla<Directora> GrillaDir = new Contratos.Grilla<Directora>();
+            int i = 0;
+            foreach (var item in directores.Lista)
+            {
+                GrillaDir.Lista[i] = ConvertirDirector(item);
+                i++;
+            }
+            GrillaDir.CantidadRegistros = directores.CantidadRegistros;
+            return GrillaDir;
+
+        }        
+        public static Contratos.Grilla<Contratos.Docente> ConvertirGrillaDocentes(Grilla<Lógica.Docente> docentes)
+        {
+            Contratos.Grilla<Contratos.Docente> GrillaDoc = new Contratos.Grilla<Contratos.Docente>();
+            int i = 0;
+            foreach (var item in docentes.Lista)
+            {
+                GrillaDoc.Lista[i] = ConvertirDocente(item);
+                i++;
+            }
+            GrillaDoc.CantidadRegistros = docentes.CantidadRegistros;
+            return GrillaDoc;
+        }        
+        public static Contratos.Grilla<Contratos.Padre> ConvertirGrillaPadres(Grilla<Lógica.Padre> padres)
+        {
+            Contratos.Grilla<Contratos.Padre> GrillaPad = new Contratos.Grilla<Contratos.Padre>();
+            int i = 0;
+            foreach (var item in padres.Lista)
+            {
+                GrillaPad.Lista[i] = ConvertirPadre(item);
+                i++;
+            }
+            GrillaPad.CantidadRegistros = padres.CantidadRegistros;
+            return GrillaPad;
         }
-        
+        public static Contratos.Grilla<Contratos.Hijo> ConvertirGrillaHijos(Grilla<Lógica.Hijo> hijos)
+        {
+            Contratos.Grilla<Contratos.Hijo> GrillaHijo = new Contratos.Grilla<Contratos.Hijo>();
+            int i = 0;
+            foreach (var item in hijos.Lista)
+            {
+                GrillaHijo.Lista[i] = ConvertirHijo(item);
+                i++;
+            }
+            GrillaHijo.CantidadRegistros = hijos.CantidadRegistros;
+            return GrillaHijo;
+        }
+
         public static Contratos.Usuario ConvertirUsuario(Lógica.Usuario usuario)
         {
             Contratos.Usuario Usuario = new Contratos.Usuario();
@@ -278,13 +328,13 @@ namespace Servicios.Transformaciones
         
         public static Lógica.Roles ConvertirRol(Contratos.Roles rol)
         {
-            Roles Rol = new Roles();
-            Rol = rol;
+            Lógica.Roles Rol = new Lógica.Roles();
+            Rol = (Lógica.Roles)rol;
             return Rol;
         }
         public static Lógica.Roles[] ConvertirRoles(Contratos.UsuarioLogueado usuario)
         {
-            Roles[] Roles = new Roles[usuario.Roles.Length];
+            Lógica.Roles[] Roles = new Lógica.Roles[usuario.Roles.Length];
             for (int i = 0; i < usuario.Roles.Length; i++)
             {
                 Roles[i] = ConvertirRol(usuario.Roles[i]);

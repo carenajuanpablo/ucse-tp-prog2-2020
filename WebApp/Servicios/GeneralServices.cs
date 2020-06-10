@@ -126,7 +126,13 @@ namespace Servicios
 
         public Contratos.Nota[] ObtenerCuadernoComunicaciones(int idPersona, UsuarioLogueado usuarioLogueado)
         {
-            throw new NotImplementedException();
+            Lógica.Nota[] notas = ClasePrincipal.ObtenerCuadernoComunicaciones(idPersona, Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado));
+            Contratos.Nota[] Notas = new Contratos.Nota[notas.Length];
+            for (int i = 0; i < notas.Length; i++)
+            {
+                Notas[i] = Transformaciones.MétodosExtensión.ConvertirNota(notas[i]);
+            }
+            return Notas;
         }
 
         public Directora ObtenerDirectoraPorId(UsuarioLogueado usuarioLogueado, int id)
@@ -181,7 +187,7 @@ namespace Servicios
         
         public UsuarioLogueado ObtenerUsuario(string email, string clave)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirUsuarioLogueado((ClasePrincipal.ObtenerUsuario(email, clave)));
         }
 
         public Contratos.Resultado ResponderNota(Contratos.Nota nota, Contratos.Comentario nuevoComentario, UsuarioLogueado usuarioLogueado)

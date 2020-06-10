@@ -228,6 +228,16 @@ namespace Servicios.Transformaciones
             return Usuario;
         }
         
+        public static Contratos.UsuarioLogueado ConvertirUsuarioLogueado(Lógica.Usuario usuario)
+        {
+            Contratos.UsuarioLogueado Usuario = new Contratos.UsuarioLogueado();
+            Usuario.Nombre = usuario.Nombre;
+            Usuario.Apellido = usuario.Apellido;
+            Usuario.Email = usuario.Email;
+            //REVISAR ROLES
+            return Usuario;
+        }
+        
         public static Contratos.Usuario ConvertirUsuario(Lógica.Usuario usuario)
         {
             Contratos.Usuario Usuario = new Contratos.Usuario();

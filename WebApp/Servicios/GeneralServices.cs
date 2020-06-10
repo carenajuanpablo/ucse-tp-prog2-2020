@@ -28,7 +28,20 @@ namespace Servicios
 
         public Contratos.Resultado AltaNota(Contratos.Nota nota, Contratos.Sala[] salas, Contratos.Hijo[] hijos, UsuarioLogueado usuarioLogueado)
         {
-            throw new NotImplementedException();
+            Lógica.Nota Nota = Transformaciones.MétodosExtensión.ConvertirNota(nota);
+            Lógica.Sala[] Salas = new Lógica.Sala[salas.Length];
+            for (int i = 0; i < salas.Length; i++)
+            {
+                Salas[i] = Transformaciones.MétodosExtensión.ConvertirSala(salas[i]);
+            }
+            Lógica.Hijo[] Hijos = new Lógica.Hijo[hijos.Length];
+            for (int i = 0; i < hijos.Length; i++)
+            {
+                Hijos[i] = Transformaciones.MétodosExtensión.ConvertirHijo(hijos[i]);
+            }
+            Lógica.Usuario User = Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado);
+
+            return Transformaciones.MétodosExtensión.ConvertirResultado(ClasePrincipal.AltaNota(Nota, Salas, Hijos, User));
         }
 
         public Contratos.Resultado AltaPadreMadre(Contratos.Padre padre, UsuarioLogueado usuarioLogueado)

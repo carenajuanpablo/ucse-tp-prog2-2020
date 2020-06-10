@@ -234,17 +234,23 @@ namespace Servicios.Transformaciones
             Usuario.Nombre = usuario.Nombre;
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
-            Usuario.Id = usuario.ID;
+            Usuario.Id = usuario.ID;            
             //REVISAR ROLES, ROLSELECCIONADO
             return Usuario;
         }
         
+        public static Lógica.Roles ConvertirRol(Contratos.Roles rol)
+        {
+            Roles Rol = new Roles();
+            Rol = rol;
+            return Rol;
+        }
         public static Lógica.Roles[] ConvertirRoles(Contratos.UsuarioLogueado usuario)
         {
             Roles[] Roles = new Roles[usuario.Roles.Length];
             for (int i = 0; i < usuario.Roles.Length; i++)
             {
-                Roles[i] = usuario.Roles.[i];
+                Roles[i] = ConvertirRol(usuario.Roles[i]);
             }
             return Roles;
         }

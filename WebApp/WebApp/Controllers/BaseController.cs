@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Servicios;
 
 namespace WebApp.Controllers
 {
@@ -15,7 +16,7 @@ namespace WebApp.Controllers
     {
         public static IServicioWeb CreateService(bool realService = false)
         {
-            return new MockService(); //TODO > Cambiar por el servicio real.  realService ? new RealService() : new MockService();          
+            return new GeneralServices(); //TODO > Cambiar por el servicio real.  realService ? new RealService() : new MockService();          
         }
 
         protected UsuarioLogueado usuarioLogueado;

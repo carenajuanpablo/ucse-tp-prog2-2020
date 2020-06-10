@@ -103,7 +103,7 @@ namespace Servicios
 
         public Contratos.Hijo ObtenerAlumnoPorId(UsuarioLogueado usuarioLogueado, int id)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirHijo(ClasePrincipal.ObtenerAlumnoPorId(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado), id));
         }
 
         public Grilla<Contratos.Hijo> ObtenerAlumnos(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
@@ -118,7 +118,7 @@ namespace Servicios
 
         public Directora ObtenerDirectoraPorId(UsuarioLogueado usuarioLogueado, int id)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirDirector(ClasePrincipal.ObtenerDirectorPorId(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado), id));
         }
 
         public Grilla<Directora> ObtenerDirectoras(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)
@@ -128,7 +128,7 @@ namespace Servicios
 
         public Contratos.Docente ObtenerDocentePorId(UsuarioLogueado usuarioLogueado, int id)
         {
-            throw new NotImplementedException();
+            return Transformaciones.MétodosExtensión.ConvertirDocente(ClasePrincipal.ObtenerDocentePorId(Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado), id));
         }
 
         public Grilla<Contratos.Docente> ObtenerDocentes(UsuarioLogueado usuarioLogueado, int paginaActual, int totalPorPagina, string busquedaGlobal)

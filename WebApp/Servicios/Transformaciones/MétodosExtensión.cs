@@ -19,6 +19,14 @@ namespace Servicios.Transformaciones
 
             return Director;
         }
+        public static Contratos.Directora ConvertirDirector(Lógica.Director director)
+        {
+            Contratos.Directora Director = new Contratos.Directora();
+            Director.Institucion = ConvertirInstitución(director.Institucion);
+            Director.Cargo = director.Cargo;
+            Director.FechaIngreso = director.FechaIngreso;
+            return Director;
+        }
         public static Docente ConvertirDocente(Contratos.Docente docente)
         {
             Docente Docente = new Docente();
@@ -30,6 +38,17 @@ namespace Servicios.Transformaciones
             Docente.Salas = salas;
             //FALTA INSTITUCION
 
+            return Docente;
+        }
+        public static Contratos.Docente ConvertirDocente(Lógica.Docente docente)
+        {
+            Contratos.Docente Docente = new Contratos.Docente();
+            Contratos.Sala[] salas = new Contratos.Sala[docente.Salas.Count];
+            for (int i = 0; i < docente.Salas.Count; i++)
+            {
+                salas[i] = ConvertirSala(docente.Salas[i]);
+            }
+            Docente.Salas = salas;
             return Docente;
         }
         public static Sala ConvertirSala(Contratos.Sala sala)
@@ -73,8 +92,6 @@ namespace Servicios.Transformaciones
                 i++;
             }
             Padre.Hijos = Hijos;
-
-
             return Padre;
         }
         public static Nota ConvertirNota(Contratos.Nota nota)
@@ -160,6 +177,7 @@ namespace Servicios.Transformaciones
                 Notas[i] = ConvertirNota(item);
                 i++;
             }
+            Hijo.Notas = Notas;
             return Hijo;
         }
         

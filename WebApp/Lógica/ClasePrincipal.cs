@@ -12,11 +12,11 @@ namespace Lógica
 {
     public class ClasePrincipal
     {
-        readonly string pathListaDeInstituciones = Path.GetFullPath("c:\\TP2020\\ListaDeInstituciones.txt");
-        readonly string pathListaDeHijos = Path.GetFullPath("c:\\TP2020\\ListaDeHijos.txt");
-        readonly string pathListaDePadres = Path.GetFullPath("c:\\TP2020\\ListaDePadres.txt");
-        readonly string pathListaDeDocentes = Path.GetFullPath("c:\\TP2020\\ListaDeDocentes.txt");
-        readonly string pathListaDeDirectores = Path.GetFullPath("c:\\TP2020\\ListaDeDirectores.txt");
+        readonly string pathListaDeInstituciones = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeInstituciones.txt");
+        readonly string pathListaDeHijos = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeHijos.txt");
+        readonly string pathListaDePadres = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDePadres.txt");
+        readonly string pathListaDeDocentes = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeDocentes.txt");
+        readonly string pathListaDeDirectores = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeDirectores.txt");
 
 
         List<Institucion> instituciones { get; set; }
@@ -32,7 +32,10 @@ namespace Lógica
             padres = LeerListaDePadres();
             docentes = LeerListaDeDocentes();
             directores = LeerListaDeDirectores();
-            Director dir = new Director() { ID = 1, Nombre = "A 1", Apellido = "B", Email = "C", Cargo = "D" , Contraseña = "123"};
+            Director dir = new Director() { ID = 1, Nombre = "A 1", Apellido = "B", Email = "C", Cargo = "D", Contraseña = "123", Roles = new Roles[] { Roles.Directora }, RolSeleccionado = Roles.Directora, Institucion = new Institucion { Id = 123, Nombre = "Pepe", Direccion = "españa 84", Telefono = "3454", Ciudad = "Rosario", Provincia = "Santa Fe", Salas = new List<Sala> { new Sala { Id = 546, Nombre = "4B" } } } };
+            directores.Add(dir);
+            ActualizarArchivo("Director");
+
         }
 
         public List<Institucion> LeerListaDeInstituciones()

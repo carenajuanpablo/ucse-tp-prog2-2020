@@ -252,7 +252,8 @@ namespace Servicios.Transformaciones
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
             Usuario.Roles = ConvertirRoles(usuario);
-            Usuario.RolSeleccionado = (Lógica.Roles)usuario.RolSeleccionado;
+            Usuario.RolSeleccionado = ConvertirRolSeleccionado(usuario.RolSeleccionado);
+
             return Usuario;
         }
         
@@ -262,9 +263,23 @@ namespace Servicios.Transformaciones
             Usuario.Nombre = usuario.Nombre;
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
+            Usuario.Roles = ConvertirRoles(usuario);
+            Usuario.RolSeleccionado = ConvertirRolSeleccionado(usuario.RolSeleccionado);
             //REVISAR ROLES
             return Usuario;
-        }        
+        }     
+        public static Contratos.Roles ConvertirRolSeleccionado(Lógica.Roles rol)
+        {
+            Contratos.Roles Rol = new Contratos.Roles();
+            Rol = (Contratos.Roles)rol;
+            return Rol;
+        }
+        public static Lógica.Roles ConvertirRolSeleccionado(Contratos.Roles rol)
+        {
+            Lógica.Roles Rol = new Lógica.Roles();
+            Rol = (Lógica.Roles)rol;
+            return Rol;
+        }
         public static Contratos.Grilla<Directora> ConvertirGrillaDirectores(Grilla<Director> directores)
         {
             Contratos.Grilla<Directora> GrillaDir = new Contratos.Grilla<Directora>();
@@ -321,7 +336,8 @@ namespace Servicios.Transformaciones
             Usuario.Nombre = usuario.Nombre;
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
-            Usuario.Id = usuario.ID;            
+            Usuario.Id = usuario.ID;    
+          
             //REVISAR ROLES, ROLSELECCIONADO
             return Usuario;
         }
@@ -332,9 +348,24 @@ namespace Servicios.Transformaciones
             Rol = (Lógica.Roles)rol;
             return Rol;
         }
+        public static Contratos.Roles ConvertirRol(Lógica.Roles rol)
+        {
+            Contratos.Roles Rol = new Contratos.Roles();
+            Rol = (Contratos.Roles)rol;
+            return Rol;
+        }
         public static Lógica.Roles[] ConvertirRoles(Contratos.UsuarioLogueado usuario)
         {
             Lógica.Roles[] Roles = new Lógica.Roles[usuario.Roles.Length];
+            for (int i = 0; i < usuario.Roles.Length; i++)
+            {
+                Roles[i] = ConvertirRol(usuario.Roles[i]);
+            }
+            return Roles;
+        }
+        public static Contratos.Roles[] ConvertirRoles(Lógica.Usuario usuario)
+        {
+            Contratos.Roles[] Roles = new Contratos.Roles[usuario.Roles.Length];
             for (int i = 0; i < usuario.Roles.Length; i++)
             {
                 Roles[i] = ConvertirRol(usuario.Roles[i]);

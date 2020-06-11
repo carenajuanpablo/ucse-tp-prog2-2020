@@ -32,10 +32,12 @@ namespace Lógica
             padres = LeerListaDePadres();
             docentes = LeerListaDeDocentes();
             directores = LeerListaDeDirectores();
-            Director dir = new Director() { ID = 1, Nombre = "A 1", Apellido = "B", Email = "C", Cargo = "D", Contraseña = "123", Roles = new Roles[] { Roles.Directora }, RolSeleccionado = Roles.Directora, Institucion = new Institucion { Id = 123, Nombre = "Pepe", Direccion = "españa 84", Telefono = "3454", Ciudad = "Rosario", Provincia = "Santa Fe", Salas = new List<Sala> { new Sala { Id = 546, Nombre = "4B" } } } };
+            Institucion inst = new Institucion() { Ciudad = "asd", Direccion = "asd", Id = 123, Nombre = "re", Provincia = "sf", Telefono = "123", Salas = new List<Sala>() { new Sala { Id = 123, Nombre = "5c" } } };
+            ActualizarArchivo("Institucion");
+
+            Director dir = new Director() { ID = 1, Nombre = "A 1", Apellido = "B", Email = "C", Cargo = "D", Contraseña = "123", Roles = new Roles[] { Roles.Directora }, RolSeleccionado = Roles.Directora, Institucion = inst , FechaIngreso = new DateTime(2020,01,02) };
             directores.Add(dir);
             ActualizarArchivo("Director");
-
         }
 
         public List<Institucion> LeerListaDeInstituciones()

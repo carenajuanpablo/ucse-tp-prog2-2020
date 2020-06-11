@@ -242,7 +242,7 @@ namespace Servicios.Transformaciones
             Usuario.Nombre = usuario.Nombre;
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
-
+            
             return Usuario;
         }
         public static Lógica.Usuario ConvertirUsuario(Contratos.UsuarioLogueado usuario)
@@ -283,12 +283,21 @@ namespace Servicios.Transformaciones
         public static Contratos.Grilla<Directora> ConvertirGrillaDirectores(Grilla<Director> directores)
         {
             Contratos.Grilla<Directora> GrillaDir = new Contratos.Grilla<Directora>();
+            Directora[] Dir = new Directora[directores.CantidadRegistros];
+            /*
+            for (int i = 0; i < directores.CantidadRegistros; i++)
+            {
+                GrillaDir.Lista[i] = ConvertirDirector(directores.Lista[i]);
+            }
+            */
             int i = 0;
             foreach (var item in directores.Lista)
             {
-                GrillaDir.Lista[i] = ConvertirDirector(item);
-                i++;
+                Dir[i] = ConvertirDirector(item);
+                //GrillaDir.Lista[i] = ConvertirDirector(item);
+                i = i +1;
             }
+            GrillaDir.Lista = Dir;
             GrillaDir.CantidadRegistros = directores.CantidadRegistros;
             return GrillaDir;
 

@@ -32,12 +32,17 @@ namespace Lógica
             padres = LeerListaDePadres();
             docentes = LeerListaDeDocentes();
             directores = LeerListaDeDirectores();
+            
             Institucion inst = new Institucion() { Ciudad = "asd", Direccion = "asd", Id = 123, Nombre = "re", Provincia = "sf", Telefono = "123", Salas = new List<Sala>() { new Sala { Id = 123, Nombre = "5c" } } };
-            ActualizarArchivo("Institucion");
-
+            
             Director dir = new Director() { ID = 1, Nombre = "A 1", Apellido = "B", Email = "C", Cargo = "D", Contraseña = "123", Roles = new Roles[] { Roles.Directora }, RolSeleccionado = Roles.Directora, Institucion = inst , FechaIngreso = new DateTime(2020,01,02) };
             directores.Add(dir);
             ActualizarArchivo("Director");
+            
+            Docente Docente = new Docente() { Institucion = inst, ID= 20, Nombre = "Docente1", Apellido = "apellido1", Email = "sdd", Roles = new Roles[] { Roles.Docente }, RolSeleccionado = Roles.Docente };
+            docentes.Add(Docente);
+            ActualizarArchivo("Docente");
+            
         }
 
         public List<Institucion> LeerListaDeInstituciones()
@@ -223,7 +228,7 @@ namespace Lógica
             }
             public AbmUsuarioArgs(Docente docente)
             {
-                Usuario = docente;
+                Usuario  = docente;
             }
             public AbmUsuarioArgs(Hijo hijo)
             {
@@ -660,24 +665,25 @@ namespace Lógica
         /// <returns></returns>
         public Resultado AltaDocente(Docente docente, Usuario usuarioLogueado)
         {
-            Resultado res = new Resultado();
+            Resultado res = new Resultado();            
             if (usuarioLogueado.RolSeleccionado == Roles.Directora)
             {
-                Director directorLogged = ConvertirDirector(usuarioLogueado);
-                var Existe = docentes.First(x => x.ID == docente.ID);
+                //Director directorLogged = ConvertirDirector(usuarioLogueado);
+                var Existe = docentes.FirstOrDefault(x => x.ID == docente.ID);
                 if (Existe==null)
                 {
-                    if (directorLogged.Institucion == docente.Institucion)
-                    {                                             
+                    //if (directorLogged.Institucion == docente.Institucion)
+                  //  {                                             
                         docente.ID = docentes.Count + 1;
+                        docente.Roles = new Roles[] {Roles.Docente};
                         docentes.Add(docente);
                         ActualizarArchivo("Docente");
-                        AbmUsuario(new AbmUsuarioArgs(docente));
-                    }
-                    else
-                    {
-                        res.Errores.Add("La institucion no coincide.");
-                    }
+                      // AbmUsuario(new AbmUsuarioArgs(docente));
+                  //  }
+                 //   else
+                 //   {
+                   //     res.Errores.Add("La institucion no coincide.");
+                  //  }
                 }
                 else
                 {
@@ -704,21 +710,21 @@ namespace Lógica
             Docente docenteEditar = ObtenerDocentePorId(usuarioLogueado,id);
             if (usuarioLogueado.RolSeleccionado == Roles.Directora)
             {
-                Director directorLogged = ConvertirDirector(usuarioLogueado);
+                //Director directorLogged = ConvertirDirector(usuarioLogueado);
                 var existe = docentes.First(x => x.ID == docenteEditar.ID);
                 if (existe!=null)
                 {
-                    if (directorLogged.Institucion == docenteEditar.Institucion)
-                    {
-                        int indice = docentes.IndexOf(docenteEditar);
+                    // if (directorLogged.Institucion == docenteEditar.Institucion)
+                    // {
+                    int indice = docentes.IndexOf(docenteEditar);
                         docentes[indice] = docente;
                         ActualizarArchivo("Docente");
-                        AbmUsuario(new AbmUsuarioArgs(docente));
-                    }
-                    else
-                    {
-                        res.Errores.Add("La institucion del director no coincide con la del docente a editar.");
-                    }
+                     //   AbmUsuario(new AbmUsuarioArgs(docente));
+                    // }
+                    //  else
+                    //  {
+                    // res.Errores.Add("La institucion del director no coincide con la del docente a editar.");
+                    // }
                 }
                 else
                 {
@@ -745,20 +751,20 @@ namespace Lógica
             Docente docenteEliminar = ObtenerDocentePorId(usuarioLogueado,id);
             if (usuarioLogueado.RolSeleccionado == Roles.Directora)
             {
-                Director directorLogged = ConvertirDirector(usuarioLogueado);
+                //Director directorLogged = ConvertirDirector(usuarioLogueado);
                 var existe = docentes.First(x => x.ID == docenteEliminar.ID);
                 if (existe != null)
                 {
-                    if (directorLogged.Institucion == docenteEliminar.Institucion)
-                    {
+                   // if (directorLogged.Institucion == docenteEliminar.Institucion)
+                   // {
                         docentes.Remove(docenteEliminar);
                         ActualizarArchivo("Docente");
-                        AbmUsuario(new AbmUsuarioArgs(docente));
-                    }
-                    else
-                    {
-                        res.Errores.Add("La instucion del director no coincide con la del docente.");
-                    }
+                        //AbmUsuario(new AbmUsuarioArgs(docente));
+                    // }
+                    //  else
+                    //  {
+                    // res.Errores.Add("La instucion del director no coincide con la del docente.");
+                    //}
                 }
                 else
                 {
@@ -1498,7 +1504,7 @@ namespace Lógica
         /// <returns></returns>
         public Docente ObtenerDocentePorId(Usuario usuarioLogueado, int id)
         {
-            return docentes.First(x => x.ID == id);
+            return docentes.FirstOrDefault(x => x.ID == id);
         }
 
         /// <summary>

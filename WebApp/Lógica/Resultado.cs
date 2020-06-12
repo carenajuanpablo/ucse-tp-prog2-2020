@@ -8,7 +8,7 @@ namespace Lógica
 {
     public class Resultado
     {
-        public List<string> Errores;
-        public bool EsValido { get { return this.Errores.Count == 0; } }
+        public List<string> Errores = new List<string>();
+        public bool EsValido { get { return this.Errores.Count == 0 ; } }
     }
 }

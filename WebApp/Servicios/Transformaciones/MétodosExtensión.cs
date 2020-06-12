@@ -14,9 +14,13 @@ namespace Servicios.Transformaciones
         public static Lógica.Director ConvertirDirector(Contratos.Directora director)
         {
             Lógica.Director Director = new Lógica.Director();
-            Director.Institucion = ConvertirInstitución(director.Institucion);
+           // Director.Institucion = ConvertirInstitución(director.Institucion);
             Director.Cargo = director.Cargo;
             Director.FechaIngreso = director.FechaIngreso;
+            Director.Nombre = director.Nombre;
+            Director.Apellido = director.Apellido;
+            Director.Email = director.Email;
+            Director.ID = director.Id;
 
             return Director;
         }
@@ -24,6 +28,10 @@ namespace Servicios.Transformaciones
         {
             Contratos.Directora Director = new Contratos.Directora();
             Director.Institucion = ConvertirInstitución(director.Institucion);
+            Director.Nombre = director.Nombre;
+            Director.Apellido = director.Apellido;
+            Director.Email = director.Email;
+            Director.Id = director.ID;
             Director.Cargo = director.Cargo;
             Director.FechaIngreso = director.FechaIngreso;
             return Director;
@@ -31,12 +39,18 @@ namespace Servicios.Transformaciones
         public static Lógica.Docente ConvertirDocente(Contratos.Docente docente)
         {
             Lógica.Docente Docente = new Lógica.Docente();
+            Docente.Nombre = docente.Nombre;
+            Docente.Apellido = docente.Apellido;
+            Docente.Email = docente.Email;
+            Docente.ID = docente.Id;
+            /*
             List<Lógica.Sala> salas = new List<Lógica.Sala>();
             foreach (var item in docente.Salas)
             {
                 salas.Add(ConvertirSala(item));
-            }
+            }            
             Docente.Salas = salas;
+            */
             //FALTA INSTITUCION
 
             return Docente;
@@ -44,12 +58,18 @@ namespace Servicios.Transformaciones
         public static Contratos.Docente ConvertirDocente(Lógica.Docente docente)
         {
             Contratos.Docente Docente = new Contratos.Docente();
+            Docente.Nombre = docente.Nombre;
+            Docente.Apellido = docente.Apellido;
+            Docente.Email = docente.Email;
+            Docente.Id = docente.ID;
+            /*
             Contratos.Sala[] salas = new Contratos.Sala[docente.Salas.Count];
             for (int i = 0; i < docente.Salas.Count; i++)
             {
                 salas[i] = ConvertirSala(docente.Salas[i]);
             }
             Docente.Salas = salas;
+            */
             return Docente;
         }
         public static Lógica.Sala ConvertirSala(Contratos.Sala sala)
@@ -242,6 +262,7 @@ namespace Servicios.Transformaciones
             Usuario.Nombre = usuario.Nombre;
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
+            Usuario.ID = usuario.Id;
             
             return Usuario;
         }
@@ -249,7 +270,7 @@ namespace Servicios.Transformaciones
         {
             Lógica.Usuario Usuario = new Lógica.Usuario();
             Usuario.Nombre = usuario.Nombre;
-            Usuario.Apellido = usuario.Apellido;
+            Usuario.Apellido = usuario.Apellido;        
             Usuario.Email = usuario.Email;
             Usuario.Roles = ConvertirRoles(usuario);
             Usuario.RolSeleccionado = ConvertirRolSeleccionado(usuario.RolSeleccionado);
@@ -305,13 +326,16 @@ namespace Servicios.Transformaciones
         public static Contratos.Grilla<Contratos.Docente> ConvertirGrillaDocentes(Grilla<Lógica.Docente> docentes)
         {
             Contratos.Grilla<Contratos.Docente> GrillaDoc = new Contratos.Grilla<Contratos.Docente>();
+            Contratos.Docente[] Doc = new Contratos.Docente[docentes.CantidadRegistros];
+
             int i = 0;
             foreach (var item in docentes.Lista)
             {
-                GrillaDoc.Lista[i] = ConvertirDocente(item);
-                i++;
+                Doc[i] = ConvertirDocente(item);
+                i = i +1;
             }
             GrillaDoc.CantidadRegistros = docentes.CantidadRegistros;
+            GrillaDoc.Lista = Doc;
             return GrillaDoc;
         }        
         public static Contratos.Grilla<Contratos.Padre> ConvertirGrillaPadres(Grilla<Lógica.Padre> padres)

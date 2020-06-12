@@ -100,7 +100,7 @@ namespace Servicios
         }
 
         public Contratos.Resultado EliminarDocente(int id, Contratos.Docente docente, UsuarioLogueado usuarioLogueado)
-        {
+        {            
             return Transformaciones.MétodosExtensión.ConvertirResultado(ClasePrincipal.EliminarDocente(id, Transformaciones.MétodosExtensión.ConvertirDocente(docente), Transformaciones.MétodosExtensión.ConvertirUsuario(usuarioLogueado)));
         }
 

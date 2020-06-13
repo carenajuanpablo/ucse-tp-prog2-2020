@@ -1047,12 +1047,12 @@ namespace Lógica
         /// 
         public Resultado AsignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
         {
+            Hijo Hijo = ObtenerAlumnoPorId(usuarioLogueado, hijo.ID);
             Resultado res = new Resultado();
-            bool pertenece = false;
             if (usuarioLogueado.RolSeleccionado == Roles.Directora)
             {
-                var existe = padres.First(x => x.ID == padre.ID);
-                if (existe != null)
+                var Padre = padres.First(x => x.ID == padre.ID);
+                if (Padre != null)
                 {
                     //Director directorLogged = ConvertirDirector(usuarioLogueado);
                     // Institucion institucion = directorLogged.Institucion;
@@ -1061,17 +1061,27 @@ namespace Lógica
                     //    foreach (Sala item in institucion.Sala)
                     //    {
                     //        if (item.alumnos.Contains(hijo))
-                    var Asignado = padre.ListaHijos.FirstOrDefault(x => x.ID == hijo.ID);
-                    if (Asignado == null)
+                    //var Asignado = padre.ListaHijos.FirstOrDefault(x => x.ID == hijo.ID);
+                    if (Padre.ListaHijos == null)
                     {
-                        padre.ListaHijos.Add(hijo);
+                        List<Hijo> ListaHijo = new List<Hijo>();
+                        ListaHijo.Add(hijo);
+                        Padre.ListaHijos = ListaHijo;
                     }
                     else
                     {
-                        res.Errores.Add("Hijo ya asignado");
+                        var Duplicado = Padre.ListaHijos.FirstOrDefault(x => x.ID == hijo.ID);
+                        if (Duplicado == null)
+                        {
+                            Padre.ListaHijos.Add(Hijo);
+                        }
+                        else
+                        {
+                            res.Errores.Add("Hijo ya asignado");
+                        }
 
                     }
-                    EditarPadreMadre(padre.ID, padre, usuarioLogueado);
+                    EditarPadreMadre(Padre.ID, Padre, usuarioLogueado);
                 }
                 else
                 {
@@ -1093,22 +1103,26 @@ namespace Lógica
         /// <returns></returns>
         public Resultado DesasignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
         {
+           // Padre Padre = ObtenerPadrePorId(usuarioLogueado, padre.ID);
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Directora)
             {
-                var existe = padres.First(x => x.ID == padre.ID);
-                if (existe != null)
+                var Padre = padres.First(x => x.ID == padre.ID);
+                if (Padre != null)
                 {
-                    var Asignado = padre.ListaHijos.FirstOrDefault(x => x.ID == hijo.ID);
-                    if (Asignado != null)
+                    if (Padre.ListaHijos != null)
                     {
-                        padre.ListaHijos.Remove(hijo);
-                    }
-                    else
-                    {
-                        res.Errores.Add("Hijo no asignado");
-                    }
-                    EditarPadreMadre(padre.ID, padre, usuarioLogueado);
+                        var Duplicado = Padre.ListaHijos.FirstOrDefault(x => x.ID == hijo.ID);
+                        if (Duplicado != null)
+                        {
+                            Padre.ListaHijos.Remove(Duplicado);
+                        }
+                        else
+                        {
+                            res.Errores.Add("Hijo no asignado");
+                        }
+                    }                    
+                    EditarPadreMadre(Padre.ID, Padre, usuarioLogueado);
                 }
                 else
                 {

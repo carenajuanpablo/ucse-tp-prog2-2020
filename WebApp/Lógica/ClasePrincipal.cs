@@ -41,7 +41,7 @@ namespace Lógica
 
             
 
-            Institucion inst = new Institucion() { Ciudad = "asd", Direccion = "asd", Id = 123, Nombre = "re", Provincia = "sf", Telefono = "123", Salas = new List<Sala>() { new Sala { Id = 123, Nombre = "5c" } } };
+            Institucion inst = new Institucion() { Ciudad = "asd", Direccion = "asd", Id = 123, Nombre = "re", Provincia = "sf", Telefono = "123" };
             instituciones.Add(inst);
             Director dir = new Director() { ID = 1, Nombre = "A 1", Apellido = "B", Email = "C", Cargo = "D", Contraseña = "123", Roles = new Roles[] { Roles.Directora }, RolSeleccionado = Roles.Directora, Institucion = inst, FechaIngreso = new DateTime(2020, 01, 02) };
             directores.Add(dir);
@@ -55,8 +55,8 @@ namespace Lógica
             padres.Add(Padre);
             ActualizarArchivo("Padre");
 
-            Sala Sala1 = new Sala() { Id = 1, Nombre = "1A" };
-            Sala Sala2 = new Sala() { Id = 2, Nombre = "2A" };
+            Sala Sala1 = new Sala() { Id = 1, Nombre = "1A", institucion = inst };
+            Sala Sala2 = new Sala() { Id = 2, Nombre = "2A", institucion = inst };
             salas.Add(Sala1);
             salas.Add(Sala2);
         }
@@ -934,6 +934,7 @@ namespace Lógica
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Directora)
             {
+                Docente Docente = ObtenerDocentePorId(usuarioLogueado, docente.ID);
                 var existe = docentes.FirstOrDefault(x => x.ID == docente.ID);
                 if (existe != null)
                 {
@@ -942,12 +943,27 @@ namespace Lógica
                     //  if (Institución == docente.Institucion) // && institucion.Salas.Contains(sala))
                     //  {
 
+                    if (Docente.Salas == null)
+                    {
                         List<Sala> salas = new List<Sala>();
                         salas.Add(sala);
-                    docente.Salas = salas;
-                    
+                        Docente.Salas = salas;
+                    }
+                    else
+                    {
+                        var Duplicado = Docente.Salas.FirstOrDefault(x => x.Id == sala.Id);
+                        if (Duplicado == null)
+                        {
+                            Docente.Salas.Add(sala);
+                        }
+                        else
+                        {
+                            res.Errores.Add("La sala ya se encuentra asignada");
+                        }
+                    }
+                    EditarDocente(Docente.ID, Docente, usuarioLogueado);
                  //   docente.Salas.Add(sala);
-                        ActualizarArchivo("Docente");
+                     //   ActualizarArchivo("Docente");
                     // }
                     //else
                     // {
@@ -975,23 +991,43 @@ namespace Lógica
         /// <returns></returns>
         public Resultado DesasignarDocenteSala(Docente docente, Sala sala, Usuario usuarioLogueado)
         {
+            Docente Docente = ObtenerDocentePorId(usuarioLogueado, docente.ID);
             Resultado res = new Resultado();
             if (usuarioLogueado.RolSeleccionado == Roles.Directora)
             {
+                Sala SALA = ObtenerSalaPorId(usuarioLogueado,sala.Id);
+
                 var existe = docentes.First(x => x.ID == docente.ID);
                 if (existe!=null)
                 {
-                    Director directorLogged = ConvertirDirector(usuarioLogueado);
-                    Institucion institucion = directorLogged.Institucion;
-                    if (institucion == docente.Institucion && docente.Salas.Contains(sala))
+                    //Director directorLogged = ConvertirDirector(usuarioLogueado);
+                    // Institucion institucion = directorLogged.Institucion;
+                    //    if (institucion == docente.Institucion && docente.Salas.Contains(sala))
+                    //   {
+                    if (Docente.Salas != null)
                     {
-                        docente.Salas.Remove(sala);
-                        ActualizarArchivo("Docente");
+                        var Duplicado = Docente.Salas.FirstOrDefault(x => x.Id == sala.Id);
+                        if (Duplicado != null)
+                        {
+                            //Docente.Salas.RemoveAt(0);
+                            Docente.Salas.Remove(Docente.Salas.FirstOrDefault(x => x.Id == sala.Id));
+                        }
+                        else
+                        {
+                            res.Errores.Add("La sala no se encuentra asignada");
+                        }
                     }
                     else
                     {
-                        res.Errores.Add("La institucion del director no coincide con la del docente o la sala no pertenece al docente.");
+                        res.Errores.Add("La sala no se encuentra asignada");
                     }
+                    EditarDocente(Docente.ID, Docente, usuarioLogueado);
+                      //  ActualizarArchivo("Docente");
+                    //    }
+                    //   else
+                    //   {
+                    //   res.Errores.Add("La institucion del director no coincide con la del docente o la sala no pertenece al docente.");
+                    // }
                 }
                 else
                 {
@@ -1008,6 +1044,7 @@ namespace Lógica
         /// <param name="padre"></param>
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
+        /// 
         public Resultado AsignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
@@ -1017,29 +1054,24 @@ namespace Lógica
                 var existe = padres.First(x => x.ID == padre.ID);
                 if (existe != null)
                 {
-                    Director directorLogged = ConvertirDirector(usuarioLogueado);
-                    Institucion institucion = directorLogged.Institucion;
-                    if (padre.ListaHijos.Contains(hijo))
+                    //Director directorLogged = ConvertirDirector(usuarioLogueado);
+                    // Institucion institucion = directorLogged.Institucion;
+                    //  if (padre.ListaHijos.Contains(hijo))
+                    //  {
+                    //    foreach (Sala item in institucion.Sala)
+                    //    {
+                    //        if (item.alumnos.Contains(hijo))
+                    var Asignado = padre.ListaHijos.FirstOrDefault(x => x.ID == hijo.ID);
+                    if (Asignado == null)
                     {
-                        foreach (Sala item in institucion.Salas)
-                        {
-                            if (item.alumnos.Contains(hijo))
-                            {
-                                padre.ListaHijos.Add(hijo);
-                                ActualizarArchivo("Padre");
-                                pertenece = true;
-                                break;
-                            }
-                        }
-                        if (pertenece == false)
-                        {
-                            res.Errores.Add("El alumno no pertenece a ninguna sala de la institucion.");
-                        }
+                        padre.ListaHijos.Add(hijo);
                     }
                     else
                     {
-                        res.Errores.Add("El hijo no pertenece al padre del parametro.");
+                        res.Errores.Add("Hijo ya asignado");
+
                     }
+                    EditarPadreMadre(padre.ID, padre, usuarioLogueado);
                 }
                 else
                 {
@@ -1062,48 +1094,35 @@ namespace Lógica
         public Resultado DesasignarHijoPadre(Hijo hijo, Padre padre, Usuario usuarioLogueado)
         {
             Resultado res = new Resultado();
-            bool pertenece = false;
             if (usuarioLogueado.RolSeleccionado == Roles.Directora)
             {
                 var existe = padres.First(x => x.ID == padre.ID);
                 if (existe != null)
                 {
-                    Director directorLogged = ConvertirDirector(usuarioLogueado);
-                    Institucion institucion = directorLogged.Institucion;
-                    if (padre.ListaHijos.Contains(hijo))
+                    var Asignado = padre.ListaHijos.FirstOrDefault(x => x.ID == hijo.ID);
+                    if (Asignado != null)
                     {
-                        foreach (Sala item in institucion.Salas)
-                        {
-                            if (item.alumnos.Contains(hijo))
-                            {
-                                padre.ListaHijos.Remove(hijo);
-                                ActualizarArchivo("Padre");
-                                pertenece = true;
-                                break;
-                            }
-                        }
-                        if (pertenece == false)
-                        {
-                            res.Errores.Add("El alumno no pertenece a ninguna sala de la institucion.");
-                        }
+                        padre.ListaHijos.Remove(hijo);
                     }
                     else
                     {
-                        res.Errores.Add("El hijo no pertenece al padre del parametro.");
+                        res.Errores.Add("Hijo no asignado");
                     }
+                    EditarPadreMadre(padre.ID, padre, usuarioLogueado);
                 }
                 else
                 {
-                    res.Errores.Add("El padre no existe.");
+                    res.Errores.Add("El Padre no existe.");
+
                 }
-               
 
             }
             else
             {
                 res.Errores.Add("El usuario loguado no es director.");
             }
-            return res;
+            return res;         
+
         }
         /// <summary>
         /// Si el usuario es directora, retornar alumnos de la institucion, si es docente los de sus salas, y si es padre solo sus hijos.
@@ -1523,6 +1542,10 @@ namespace Lógica
         public Director ObtenerDirectorPorId(Usuario usuarioLogueado, int id)
         {
             return directores.First(x => x.ID == id);
+        }
+        public Sala ObtenerSalaPorId(Usuario usuarioLogueado, int id)
+        {
+            return salas.First(x => x.Id == id);
         }
 
         /// <summary>

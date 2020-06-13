@@ -14,7 +14,10 @@ namespace Servicios.Transformaciones
         public static Lógica.Director ConvertirDirector(Contratos.Directora director)
         {
             Lógica.Director Director = new Lógica.Director();
-            //Director.Institucion = ConvertirInstitución(director.Institucion);
+            if (director.Institucion != null)
+            {
+                Director.Institucion = ConvertirInstitución(director.Institucion);
+            }
             Director.Cargo = director.Cargo;
             Director.FechaIngreso = director.FechaIngreso;
             Director.Nombre = director.Nombre;
@@ -27,7 +30,10 @@ namespace Servicios.Transformaciones
         public static Contratos.Directora ConvertirDirector(Lógica.Director director)
         {
             Contratos.Directora Director = new Contratos.Directora();
-            //Director.Institucion = ConvertirInstitución(director.Institucion);
+            if (director.Institucion != null)
+            {
+                Director.Institucion = ConvertirInstitución(director.Institucion);
+            }
             Director.Nombre = director.Nombre;
             Director.Apellido = director.Apellido;
             Director.Email = director.Email;

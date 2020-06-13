@@ -9,6 +9,6 @@ namespace Lógica
     public class Padre : Usuario
     {
         public List<Hijo> ListaHijos { get; set; }
-
+        public Institucion Institucion { get; set; }
     }
 }

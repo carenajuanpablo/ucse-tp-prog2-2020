@@ -17,7 +17,8 @@ namespace Lógica
         readonly string pathListaDePadres = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDePadres.txt");
         readonly string pathListaDeDocentes = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeDocentes.txt");
         readonly string pathListaDeDirectores = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeDirectores.txt");
-
+        readonly string pathListaDeSalas = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeSalas.txt");
+        
 
         List<Institucion> instituciones { get; set; }
         List<Hijo> hijos { get; set; }
@@ -36,29 +37,49 @@ namespace Lógica
             hijos = LeerListaDeHijos();
             padres = LeerListaDePadres();
             docentes = LeerListaDeDocentes();
-            directores = LeerListaDeDirectores();
-
-
+            directores = LeerListaDeDirectores();            
             
+            //Instituciones Ejemplo
+            Institucion Institucion1 = new Institucion() { Ciudad = "Rafaela", Direccion = "España 84", Id = 1, Nombre = "UCSE", Provincia = "SF", Telefono = "4545654" };
+            Institucion Institucion2 = new Institucion() { Ciudad = "Rosario", Direccion = "Zeballos 1500", Id = 2, Nombre = "UTN", Provincia = "SF", Telefono = "4555556" };
+            instituciones.Add(Institucion1);
+            instituciones.Add(Institucion2);
+            ActualizarArchivo("Institucion");
 
-            Institucion inst = new Institucion() { Ciudad = "asd", Direccion = "asd", Id = 123, Nombre = "re", Provincia = "sf", Telefono = "123" };
-            instituciones.Add(inst);
-            Director dir = new Director() { ID = 1, Nombre = "A 1", Apellido = "B", Email = "C", Cargo = "D", Contraseña = "123", Roles = new Roles[] { Roles.Directora }, RolSeleccionado = Roles.Directora, Institucion = inst, FechaIngreso = new DateTime(2020, 01, 02) };
-            directores.Add(dir);
-            ActualizarArchivo("Director");
-
-            Docente Docente = new Docente() { Institucion = inst, ID = 20, Nombre = "Docente1", Apellido = "apellido1", Email = "sdd", Roles = new Roles[] { Roles.Docente }, RolSeleccionado = Roles.Docente };
-            docentes.Add(Docente);
-            ActualizarArchivo("Docente");
-            
-            Padre Padre = new Padre() { Nombre = "Roberto", ID = 45, Apellido = "apellido1", Email = "sdd", Roles = new Roles[] { Roles.Padre }, RolSeleccionado = Roles.Padre , ListaHijos = new List<Hijo>() { new Hijo { ID=1, Nombre="Pedro" } } }   ;
-            padres.Add(Padre);
-            ActualizarArchivo("Padre");
-
-            Sala Sala1 = new Sala() { Id = 1, Nombre = "1A", institucion = inst };
-            Sala Sala2 = new Sala() { Id = 2, Nombre = "2A", institucion = inst };
+            //Salas Ejemplo
+            Sala Sala1 = new Sala() { Id = 1, Nombre = "1A", institucion = Institucion1 };
+            Sala Sala2 = new Sala() { Id = 2, Nombre = "2A", institucion = Institucion1 };
+            Sala Sala3 = new Sala() { Id = 3, Nombre = "2B", institucion = Institucion2 };
             salas.Add(Sala1);
             salas.Add(Sala2);
+            salas.Add(Sala3);
+            ActualizarArchivo("Sala");
+
+            //Directores Ejemplo
+            Director Director1 = new Director() { ID = 1, Nombre = "Roger", Apellido = "Taylor", Email = "A1", Cargo = "A", Contraseña = "123", Roles = new Roles[] { Roles.Directora }, RolSeleccionado = Roles.Directora, Institucion = Institucion1, FechaIngreso = new DateTime(2020, 01, 02) };
+            Director Director2 = new Director() { ID = 2, Nombre = "John", Apellido = "Deacon", Email = "A2", Cargo = "B", Contraseña = "123", Roles = new Roles[] { Roles.Directora }, RolSeleccionado = Roles.Directora, Institucion = Institucion2, FechaIngreso = new DateTime(2020, 01, 02) };
+            directores.Add(Director1);
+            directores.Add(Director2);
+            ActualizarArchivo("Director");
+
+
+            //Padres Ejemplo
+            Padre Padre1 = new Padre() { Nombre = "Roberto", ID = 1, Apellido = "Pereyra", Email = "C1", Contraseña = "123", Roles = new Roles[] { Roles.Padre }, RolSeleccionado = Roles.Padre  }   ;
+            padres.Add(Padre1);
+            ActualizarArchivo("Padre");
+
+            //Alumnos Ejemplos
+            Hijo Hijo1 = new Hijo() { Nombre = "Damian", Apellido = "Manzo", Email = "D1", FechaNacimiento = new DateTime(1990, 05, 03), ResultadoUltimaEvaluacionAnual = 4, ID = 1, Institucion = Institucion1, Sala = Sala1 };
+            hijos.Add(Hijo1);
+            ActualizarArchivo("Hijo");
+
+            
+           //Docentes Ejemplo
+            Docente Docente1 = new Docente() { Institucion = Institucion1, ID = 1, Nombre = "Maximiliano", Apellido = "Lovera", Email = "B1", Roles = new Roles[] { Roles.Docente }, RolSeleccionado = Roles.Docente, Contraseña = "123"};
+            docentes.Add(Docente1);
+            ActualizarArchivo("Docente");
+            
+
         }
 
         public List<Institucion> LeerListaDeInstituciones()
@@ -226,6 +247,14 @@ namespace Lógica
                         archivo.Close();
                     }
                     break;
+                case "Sala":
+                    using (StreamWriter archivo = new StreamWriter(pathListaDeSalas))
+                    {
+                        string JsonContenido = JsonConvert.SerializeObject(salas);
+                        archivo.Write(JsonContenido);
+                        archivo.Close();
+                    }
+                    break;
             }
         }
 
@@ -322,8 +351,12 @@ namespace Lógica
                     Inst = Dir.Institucion;
                     break;
                 case Roles.Docente:
-                    Docente Doc = new Docente();
+                    Docente Doc = ConvertirDocente(User);
                     Inst = Doc.Institucion;
+                    break;
+                case Roles.Padre:
+                    Padre Pad = ConvertirPadre(User);
+                    Inst = Pad.Institucion;
                     break;
                 default:
                     break;
@@ -489,7 +522,7 @@ namespace Lógica
         /// <summary>
         /// El usuario logueado debe ser un director
         /// </summary>
-        /// <param name="hijo"></param>
+        /// <param name="hijo"></param>AltaAlum
         /// <param name="usuarioLogueado"></param>
         /// <returns></returns>
         public Resultado AltaAlumno(Hijo hijo, Usuario usuarioLogueado)
@@ -500,7 +533,17 @@ namespace Lógica
               var Existe = hijos.FirstOrDefault(x => x.ID == hijo.ID);
               if (Existe == null)
               {
-                 hijo.ID = hijos.Count + 1;
+                    if (hijo.Roles == null)
+                    {
+                        hijo.Roles = new Roles[] { Roles.Directora };
+                    }
+                    else
+                    {
+                        int i = hijo.Roles.Length;
+                        hijo.Roles[i] = Roles.Directora;
+                    }
+
+                    hijo.ID = hijos.Count + 1;
                  hijo.Institucion = Institución;
                  hijos.Add(hijo);
                  ActualizarArchivo("Hijo");
@@ -534,8 +577,14 @@ namespace Lógica
                 var existe = hijos.First(x => x.ID == alumnoEditar.ID);
                 if (existe != null)
                 {
+                    alumnoEditar.Sala = hijo.Sala;
+                    alumnoEditar.Nombre = hijo.Nombre;
+                    alumnoEditar.Apellido = hijo.Apellido;
+                    alumnoEditar.Email = hijo.Email;
+                    alumnoEditar.FechaNacimiento = hijo.FechaNacimiento;
+                    alumnoEditar.ResultadoUltimaEvaluacionAnual = hijo.ResultadoUltimaEvaluacionAnual;
                     int indice = hijos.IndexOf(alumnoEditar);
-                    hijos[indice] = hijo;
+                    hijos[indice] = alumnoEditar;
                     ActualizarArchivo("Hijo");
                    // AbmUsuario(new AbmUsuarioArgs(hijo));
                 }
@@ -603,9 +652,15 @@ namespace Lógica
                     // Director directorLogged = ConvertirDirector(usuarioLogueado);
                     //  if (directorLogged.Institucion == directorEditar.Institucion)
                     //  {
+                    directorEditar.Nombre = director.Nombre;
+                    directorEditar.Apellido = director.Apellido;
+                    directorEditar.Email = director.Email;
+                    directorEditar.FechaIngreso = director.FechaIngreso;
+                    directorEditar.Cargo = director.Cargo;
+                   
                     int indice = directores.IndexOf(directorEditar);
-                        directores[indice] = director;
-                        ActualizarArchivo("Director");
+                    directores[indice] = directorEditar;
+                    ActualizarArchivo("Director");
                     //  AbmUsuario(new AbmUsuarioArgs(director));
                     //  }
                     // else
@@ -757,8 +812,12 @@ namespace Lógica
                 {
                     // if (directorLogged.Institucion == docenteEditar.Institucion)
                     // {
+                    docenteEditar.Nombre = docente.Nombre;
+                    docenteEditar.Apellido = docente.Apellido;
+                    docenteEditar.Email = docente.Email;
+
                     int indice = docentes.IndexOf(docenteEditar);
-                        docentes[indice] = docente;
+                        docentes[indice] = docenteEditar;
                         ActualizarArchivo("Docente");
                      //   AbmUsuario(new AbmUsuarioArgs(docente));
                     // }
@@ -832,6 +891,7 @@ namespace Lógica
                 var Existe = padres.FirstOrDefault(x => x.ID == padre.ID);
                 if (Existe == null)
                 {
+                    padre.Institucion = Institución;
                     padre.ID = padres.Count + 1;
                     if (padre.Roles == null)
                     {
@@ -871,9 +931,12 @@ namespace Lógica
             {
                 var existe = padres.First(x => x.ID == padreEditar.ID);
                 if (existe != null)
-                {                   
+                {
+                    padreEditar.Nombre = padre.Nombre;
+                    padreEditar.Apellido = padre.Apellido;
+                    padreEditar.Email = padre.Email;
                    int indice = padres.IndexOf(padreEditar);
-                   padres[indice] = padre;
+                   padres[indice] = padreEditar;
                    ActualizarArchivo("Padre");
                  // AbmUsuario(new AbmUsuarioArgs(padre));
                 }
@@ -942,11 +1005,11 @@ namespace Lógica
                     //Institucion institucion = directorLogged.Institucion;
                     //  if (Institución == docente.Institucion) // && institucion.Salas.Contains(sala))
                     //  {
-
+                    Sala Sala = ObtenerSalaPorId(usuarioLogueado,sala.Id);
                     if (Docente.Salas == null)
                     {
                         List<Sala> salas = new List<Sala>();
-                        salas.Add(sala);
+                        salas.Add(Sala);
                         Docente.Salas = salas;
                     }
                     else
@@ -954,7 +1017,7 @@ namespace Lógica
                         var Duplicado = Docente.Salas.FirstOrDefault(x => x.Id == sala.Id);
                         if (Duplicado == null)
                         {
-                            Docente.Salas.Add(sala);
+                            Docente.Salas.Add(Sala);
                         }
                         else
                         {
@@ -1065,7 +1128,7 @@ namespace Lógica
                     if (Padre.ListaHijos == null)
                     {
                         List<Hijo> ListaHijo = new List<Hijo>();
-                        ListaHijo.Add(hijo);
+                        ListaHijo.Add(Hijo);
                         Padre.ListaHijos = ListaHijo;
                     }
                     else

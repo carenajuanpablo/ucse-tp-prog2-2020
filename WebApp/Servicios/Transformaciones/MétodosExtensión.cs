@@ -176,12 +176,16 @@ namespace Servicios.Transformaciones
             Nota.Descripcion = nota.Descripcion;
             Nota.FechaEventoAsociado = nota.FechaEventoAsociado;
             Nota.Leida = nota.Leida;
-            Contratos.Comentario[] comentarios = new Contratos.Comentario[nota.Comentarios.Length];
-            for (int i = 0; i < nota.Comentarios.Length; i++)
+            if (nota.Comentarios != null)
             {
-                comentarios[i] = ConvertirComentario(nota.Comentarios[i]);
+                Contratos.Comentario[] comentarios = new Contratos.Comentario[nota.Comentarios.Length];
+                for (int i = 0; i < nota.Comentarios.Length; i++)
+                {
+                    comentarios[i] = ConvertirComentario(nota.Comentarios[i]);
+                }
+                Nota.Comentarios = comentarios;
             }
-            Nota.Comentarios = comentarios;
+
 
             return Nota;
         }
@@ -331,13 +335,15 @@ namespace Servicios.Transformaciones
         public static Contratos.UsuarioLogueado ConvertirUsuarioLogueado(Lógica.Usuario usuario)
         {
             Contratos.UsuarioLogueado Usuario = new Contratos.UsuarioLogueado();
-            Usuario.Nombre = usuario.Nombre;
-            Usuario.Apellido = usuario.Apellido;
-            Usuario.Email = usuario.Email;
-            Usuario.Roles = ConvertirRoles(usuario);
-            Usuario.RolSeleccionado = ConvertirRolSeleccionado(usuario.RolSeleccionado);
-            //REVISAR ROLES
-            return Usuario;
+            if (usuario != null)            {
+                Usuario.Nombre = usuario.Nombre;
+                Usuario.Apellido = usuario.Apellido;
+                Usuario.Email = usuario.Email;
+                Usuario.Roles = ConvertirRoles(usuario);
+                Usuario.RolSeleccionado = ConvertirRolSeleccionado(usuario.RolSeleccionado);
+                return Usuario;
+            }
+            return null;
         }     
         public static Contratos.Roles ConvertirRolSeleccionado(Lógica.Roles rol)
         {

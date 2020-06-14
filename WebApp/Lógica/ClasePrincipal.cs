@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace Lógica
 {
+
     public class ClasePrincipal
     {
         readonly string pathListaDeInstituciones = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeInstituciones.txt");
@@ -43,7 +44,8 @@ namespace Lógica
             directores = LeerListaDeDirectores();
             salas = LeerListaDeSalas();
             notas = LeerListaDeNotas();
-            
+
+
             //Instituciones Ejemplo
             Institucion Institucion1 = new Institucion() { Ciudad = "Rafaela", Direccion = "España 84", Id = 1, Nombre = "UCSE", Provincia = "SF", Telefono = "4545654" };
             Institucion Institucion2 = new Institucion() { Ciudad = "Rosario", Direccion = "Zeballos 1500", Id = 2, Nombre = "UTN", Provincia = "SF", Telefono = "4555556" };
@@ -67,30 +69,40 @@ namespace Lógica
             directores.Add(Director2);
             ActualizarArchivo("Director");
 
+            //Notas Ejemplos
+            Nota Nota1 = new Nota() { Id = 1, Titulo = "Nota1", FechaEventoAsociado = new DateTime(2020, 03, 02), Descripcion = "esto es una nota1", Comentarios = new Comentario[] { } };//, Comentarios = new Comentario[] { new Comentario() { Fecha = new DateTime(2020,01,02), Mensaje = "Comentario1", Usuario = Director1 } } };
+            Nota Nota2 = new Nota() { Id = 2, Titulo = "Nota2", FechaEventoAsociado = new DateTime(2020, 03, 02), Descripcion = "esto es una nota2", Comentarios = new Comentario[] { } };// Comentarios = new Comentario[] { new Comentario() { Fecha = new DateTime(2020, 01, 02), Mensaje = "Comentario1", Usuario = Director1 } } };
+            notas.Add(Nota1);
+            notas.Add(Nota2);
+            ActualizarArchivo("Nota");
 
-            //Padres Ejemplo
-            Padre Padre1 = new Padre() { Nombre = "Roberto", ID = 1, Apellido = "Pereyra", Email = "C1", Contraseña = "123", Roles = new Roles[] { Roles.Padre }, RolSeleccionado = Roles.Padre  }   ;
-            padres.Add(Padre1);
-            ActualizarArchivo("Padre");
 
             //Alumnos Ejemplos
-            Hijo Hijo1 = new Hijo() { Nombre = "Damian", Apellido = "Manzo", Email = "D1", FechaNacimiento = new DateTime(1990, 05, 03), ResultadoUltimaEvaluacionAnual = 4, ID = 1, Institucion = Institucion1, Sala = Sala1 };
-            Hijo Hijo2 = new Hijo() { Nombre = "Roberto", Apellido = "Sensini", Email = "D2", FechaNacimiento = new DateTime(1940, 05, 03), ResultadoUltimaEvaluacionAnual = 8, ID = 2, Institucion = Institucion1, Sala = Sala2 };
+            Hijo Hijo1 = new Hijo() { Nombre = "Damian", Apellido = "Manzo", Email = "D1", FechaNacimiento = new DateTime(1990, 05, 03), ResultadoUltimaEvaluacionAnual = 4, ID = 1, Institucion = Institucion1, Sala = Sala1, Notas = new List<Nota> {Nota1 } };
+            Hijo Hijo2 = new Hijo() { Nombre = "Roberto", Apellido = "Sensini", Email = "D2", FechaNacimiento = new DateTime(1940, 05, 03), ResultadoUltimaEvaluacionAnual = 8, ID = 2, Institucion = Institucion1, Sala = Sala2, Notas = new List<Nota> { Nota2 } };
 
             hijos.Add(Hijo1);
             hijos.Add(Hijo2);
 
             ActualizarArchivo("Hijo");
 
-            
-           //Docentes Ejemplo
+            //Padres Ejemplo
+            Padre Padre1 = new Padre() { Nombre = "Roberto", ID = 1, Apellido = "Pereyra", Email = "C1", Contraseña = "123", Roles = new Roles[] { Roles.Padre }, RolSeleccionado = Roles.Padre };
+            Padre Padre2 = new Padre() { Nombre = "Juan Pablo", ID = 2, Apellido = "Disummo", Email = "C2", Contraseña = "123", Roles = new Roles[] { Roles.Padre }, RolSeleccionado = Roles.Padre, ListaHijos = new List<Hijo> { Hijo1 }, Institucion = Institucion1 };
+
+            padres.Add(Padre1);
+            padres.Add(Padre2);
+            ActualizarArchivo("Padre");
+
+
+            //Docentes Ejemplo
             Docente Docente1 = new Docente() { Institucion = Institucion1, ID = 1, Nombre = "Maximiliano", Apellido = "Lovera", Email = "B1", Roles = new Roles[] { Roles.Docente }, RolSeleccionado = Roles.Docente, Contraseña = "123"};
             docentes.Add(Docente1);
             ActualizarArchivo("Docente");
             
 
         }
-
+   
         public List<Institucion> LeerListaDeInstituciones()
         {
             if (!File.Exists(pathListaDeInstituciones))
@@ -320,6 +332,7 @@ namespace Lógica
                         archivo.Close();
                     }
                     break;
+
             }
         }
 
@@ -442,8 +455,11 @@ namespace Lógica
                 }
             }
             UsuarioLogueado = UsuarioEncontrado;
-            Institución = ObtenerInstituciónUsuarioLogueado(UsuarioLogueado);
-
+            
+            if (UsuarioEncontrado != null)
+            {
+                Institución = ObtenerInstituciónUsuarioLogueado(UsuarioLogueado);
+            }
             return UsuarioEncontrado;
         }
 
@@ -637,10 +653,9 @@ namespace Lógica
         {
             Resultado res = new Resultado();
             Hijo alumnoEditar = ObtenerAlumnoPorId(usuarioLogueado,id);
-            if (usuarioLogueado.RolSeleccionado == Roles.Directora)
-            {
-                var existe = hijos.First(x => x.ID == alumnoEditar.ID);
-                if (existe != null)
+
+            var existe = hijos.First(x => x.ID == alumnoEditar.ID);
+            if (existe != null)
                 {
                     alumnoEditar.Notas = hijo.Notas;
                     alumnoEditar.Sala = hijo.Sala;
@@ -659,11 +674,8 @@ namespace Lógica
                     res.Errores.Add("El alumno que se quiere editar no existe.");
                 }
               
-            }
-            else
-            {
-                res.Errores.Add("El usuario logueado no es director.");
-            }
+            
+
             return res;
         }
 
@@ -796,8 +808,12 @@ namespace Lógica
             switch (usuarioLogueado.RolSeleccionado)
             {
                 case Roles.Docente:
-                    Docente docente = ConvertirDocente(usuarioLogueado);
-                    Salas = docente.Salas;
+                    Docente docente = ObtenerDocentePorId(UsuarioLogueado,UsuarioLogueado.ID);
+                    if (docente.Salas != null)
+                    {
+                        Salas = docente.Salas;
+                    }
+
                     break;
                 case Roles.Padre:
                     throw new Exception("Inaccesible.");
@@ -805,7 +821,8 @@ namespace Lógica
                     Salas = salas;
 
                     Director director = ObtenerDirectorPorId(usuarioLogueado, UsuarioLogueado.ID);
-                    Salas = salas.Where(x => x.institucion.Id == director.Institucion.Id).ToList();
+
+                    Salas = salas.Where(x => x.institucion != null && x.institucion.Id == director.Institucion.Id).ToList();
 
 
                     break;
@@ -1269,18 +1286,45 @@ namespace Lógica
         /// </summary>        
         /// <returns></returns>
         public Hijo[] ObtenerPersonas(Usuario usuarioLogueado)
-        {          
+        {
+            List<Hijo> Hijos = new List<Hijo>();
             switch (usuarioLogueado.RolSeleccionado)
             {
                 case Roles.Docente:
-                    Docente docente = ConvertirDocente(usuarioLogueado);
-                    return hijos.Where(x => docente.Salas.Contains(x.Sala)).ToArray();                  
+                    Docente docente = ObtenerDocentePorId(UsuarioLogueado,UsuarioLogueado.ID);
+                    // return hijos.Where(x => x.Sala.Id == docente.Salas.Any(y => y.Id == x.Sala.Id));
+                    if (docente.Salas != null)
+                    {
+                        return hijos.Where(x => docente.Salas.Contains(x.Sala)).ToArray();
+                    }
+                    return Hijos.ToArray();
                 case Roles.Padre:
-                    Padre padre = ConvertirPadre(usuarioLogueado);
-                    return padre.ListaHijos.ToArray();                   
+                    Padre padre = ObtenerPadrePorId(UsuarioLogueado, UsuarioLogueado.ID);
+
+                    if (padre.ListaHijos != null)
+                    {
+                        return padre.ListaHijos.ToArray();
+                    }
+                    else
+                    {
+                        return Hijos.ToArray();
+                    }
+                    /*
+                    if (padre.ListaHijos?.Any()?.GetValueOrDefault())
+                    {
+
+                        return Hijos.ToArray();
+                    }
+                    else
+                    {
+
+                       return padre.ListaHijos.ToArray();
+                    }
+                    */
+                   
                 case Roles.Directora:
                     //var director = ObtenerDirectorPorId(usuarioLogueado, UsuarioLogueado.ID);
-                    List<Hijo> Hijos = hijos.Where(x => x.Institucion.Id == Institución.Id).ToList();
+                    Hijos = hijos.Where(x => x.Institucion.Id == Institución.Id).ToList();
                     return Hijos.ToArray();
                     //return hijos.Where(x => x.Institucion == Institución).ToArray();
                 default:
@@ -1303,24 +1347,24 @@ namespace Lógica
                 {
                     case Roles.Docente:
                         {
-                            Docente docente = ConvertirDocente(usuarioLogueado);
-                            var Coincide = docente.Salas.FirstOrDefault(x => x.alumnos.Any(y => y.ID == idPersona));
-                            if (Coincide != null)
+                            Docente docente = ObtenerDocentePorId(UsuarioLogueado, UsuarioLogueado.ID);
+                            //   var Coincide = docente.Salas.FirstOrDefault(x => x.alumnos.Any(y => y.ID == idPersona));
+                            //  if (Coincide != null)
                             {
                                 foreach (var item in alumno.Notas)
                                 {
                                     nota.Add(item);
                                 }
                             }
-                            else
-                            {
-                                throw new Exception("Alumno no pertenece a un aula del profesor");
-                            }
+                            //    else
+                            //   {
+                            //  throw new Exception("Alumno no pertenece a un aula del profesor");
+                            //  }
                             break;
                         }
                     case Roles.Padre:
                         {
-                            Padre padre = ConvertirPadre(usuarioLogueado);
+                            Padre padre = ObtenerPadrePorId(UsuarioLogueado, UsuarioLogueado.ID);
                             var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == idPersona);
                             if (esHijo != null)
                             {
@@ -1340,9 +1384,12 @@ namespace Lógica
                             //Director director = ConvertirDirector(usuarioLogueado);
                             if (Institución == alumno.Institucion)
                             {
-                                foreach (var item in alumno.Notas)
+                                if (alumno.Notas != null)
                                 {
-                                    nota.Add(item);
+                                    foreach (var item in alumno.Notas)
+                                    {
+                                        nota.Add(item);
+                                    }
                                 }
                             }
                             else
@@ -1366,9 +1413,13 @@ namespace Lógica
         {
             var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
             nota.Id = notas.Count + 1;
-            nota.FechaEventoAsociado = DateTime.Today;                      
+            nota.FechaEventoAsociado = DateTime.Today;
+            nota.Comentarios = new Comentario[] { };
             notasHijo.Add(nota);
             hijo.Notas = notasHijo;
+
+            notas.Add(nota);
+            ActualizarArchivo("Nota");
             //AltNota(new AltaNotaArgs(hijo,nota));
             EditarAlumno(hijo.ID, hijo, UsuarioLogueado);
             //ActualizarArchivo("Hijo");
@@ -1389,11 +1440,12 @@ namespace Lógica
             {
                 case Roles.Padre:
                     {
-                        Padre padre = ConvertirPadre(usuarioLogueado);
+                        Padre padre = ObtenerPadrePorId(UsuarioLogueado,UsuarioLogueado.ID);
                         if (hijos != null && hijos.Length > 0)
                         {
                             foreach (var item in hijos)
                             {
+                                Hijo Hijo = ObtenerAlumnoPorId(usuarioLogueado, item.ID);
                                 var esHijo = padre.ListaHijos.FirstOrDefault(x => x.ID == item.ID);
                                 if (esHijo != null)
                                 {
@@ -1429,14 +1481,15 @@ namespace Lógica
                     }
                 case Roles.Docente:
                     {
-                        Docente docente = ConvertirDocente(usuarioLogueado);
+                        Docente docente = ObtenerDocentePorId(UsuarioLogueado,UsuarioLogueado.ID);
                         if (hijos != null && hijos.Length > 0)
                         {
                             foreach (var item in hijos)
                             {
-                                if (docente.Institucion == item.Institucion)
+                                Hijo Hijo = ObtenerAlumnoPorId(usuarioLogueado, item.ID);
+                                if (docente.Institucion == Hijo.Institucion)
                                 {
-                                    GuardarNota(item, nota);
+                                    GuardarNota(Hijo, nota);
                                 }
                                 else
                                 {
@@ -1515,6 +1568,7 @@ namespace Lógica
             // comment.Add(nuevoComentario);
             var NOTA = hijo.Notas.FirstOrDefault(x => x.Id == nota.Id);
             hijo.Notas.Remove(NOTA);
+            notas.Remove(NOTA);
             if (NOTA.Comentarios == null)
             {
                 List<Comentario> Comentario = new List<Comentario>();
@@ -1529,7 +1583,8 @@ namespace Lógica
                 NOTA.Comentarios = Com.ToArray();
                 hijo.Notas.Add(NOTA);
             }
-
+            notas.Add(NOTA);
+            ActualizarArchivo("Nota");
             /*
             int cant = NOTA.Comentarios.Count();
             NOTA.Comentarios[cant-1] = nuevoComentario;
@@ -1555,20 +1610,22 @@ namespace Lógica
             switch (usuarioLogueado.RolSeleccionado)
             {
                 case Roles.Docente:
-                    Docente docente = usuarioLogueado as Docente;
-                    var esAlumno = docente.Salas.FirstOrDefault(x => x.alumnos.Any(y => y.Notas.Any(z => z.Id == nota.Id)));
-                    if (esAlumno != null)
-                    {
-                       // AgregarComentario(nota, nuevoComentario, esAlumno);
-                    }
-                    else
-                    {
-                        res.Errores.Add($"La nota no corresponde a un alumno del profesor");
-                    }
+                    var alumno = hijos.FirstOrDefault(x => x.Notas != null && x.Notas.Any(y => y.Id == nota.Id));
+
+                    Docente docente = ObtenerDocentePorId(UsuarioLogueado, UsuarioLogueado.ID);
+                    //var esAlumno = docente.Salas.FirstOrDefault(x => x.alumnos.Any(y => y.Notas.Any(z => z.Id == nota.Id)));
+                    // if (esAlumno != null)
+                    //  {
+                    AgregarComentario(nota, nuevoComentario, alumno);
+                    //    }
+                    //   else
+                    //   {
+                    //   res.Errores.Add($"La nota no corresponde a un alumno del profesor");
+                    //}
                     break;
                 case Roles.Padre:
-                    Padre padre = usuarioLogueado as Padre;
-                    var esHijo = padre.ListaHijos.First(x => x.Notas.Any(y => y.Id == nota.Id));
+                    Padre padre = ObtenerPadrePorId(UsuarioLogueado, UsuarioLogueado.ID);
+                    var esHijo = padre.ListaHijos.FirstOrDefault(x => x.Notas != null && x.Notas.Any(y => y.Id == nota.Id));
                     if (esHijo != null)
                     {
                         AgregarComentario(nota, nuevoComentario, esHijo);
@@ -1580,10 +1637,13 @@ namespace Lógica
                     break;
                 case Roles.Directora:
                     //Director director = ObtenerDirectorPorId(usuarioLogueado, usuarioLogueado.ID);
-                    var alumno = hijos.First(x => x.Notas.Any(y => y.Id == nota.Id));
-                    if (Institución == alumno.Institucion)
+                    // var result = hijos.Where(c => c.Notas.Where(p => p.Id == nota.Id).Any());
+                    //var alumno = hijos.Where(d => d.Notas != null && d.Notas.Any(s => s.Id == nota.Id));
+
+                    var alumno2 = hijos.FirstOrDefault(x => x.Notas != null && x.Notas.Any(y => y.Id == nota.Id));
+                    if (Institución == alumno2.Institucion)
                     {
-                        AgregarComentario(nota, nuevoComentario, alumno);
+                        AgregarComentario(nota, nuevoComentario, alumno2);
                     }
                     else
                     {
@@ -1609,7 +1669,7 @@ namespace Lógica
                     res.Errores.Add("No es usuario Padre");
                     break;
                 case Roles.Padre:
-                    Padre padre = ConvertirPadre(usuarioLogueado);
+                    Padre padre = ObtenerPadrePorId(UsuarioLogueado, UsuarioLogueado.ID);
                     var esHijo = padre.ListaHijos.FirstOrDefault(x => x.Notas.Any(y => y.Id == nota.Id));
                     if (esHijo != null)
                     {
@@ -1737,7 +1797,7 @@ namespace Lógica
         /// <returns></returns>
         public Padre ObtenerPadrePorId(Usuario usuarioLogueado, int id)
         {
-            return padres.First(x => x.ID == id);
+            return padres.FirstOrDefault(x => x.ID == id);
         }
 
         /// <summary>

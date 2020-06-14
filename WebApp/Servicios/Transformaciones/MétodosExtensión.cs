@@ -157,13 +157,15 @@ namespace Servicios.Transformaciones
             Nota.Descripcion = nota.Descripcion;
             Nota.FechaEventoAsociado = nota.FechaEventoAsociado;
             Nota.Leida = nota.Leida;
-            Lógica.Comentario[] comentarios = new Lógica.Comentario[nota.Comentarios.Length];
-            for (int i = 0; i < nota.Comentarios.Length; i++)
+            if (nota.Comentarios != null)
             {
-                comentarios[i] = ConvertirComentario(nota.Comentarios[i]);
+                Lógica.Comentario[] comentarios = new Lógica.Comentario[nota.Comentarios.Length];
+                for (int i = 0; i < nota.Comentarios.Length; i++)
+                {
+                    comentarios[i] = ConvertirComentario(nota.Comentarios[i]);
+                }
+                Nota.Comentarios = comentarios;
             }
-            Nota.Comentarios = comentarios;
-
             return Nota;
         }
         public static Contratos.Nota ConvertirNota(Lógica.Nota nota)

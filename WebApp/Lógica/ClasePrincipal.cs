@@ -18,14 +18,17 @@ namespace Lógica
         readonly string pathListaDeDocentes = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeDocentes.txt");
         readonly string pathListaDeDirectores = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeDirectores.txt");
         readonly string pathListaDeSalas = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeSalas.txt");
-        
+        readonly string pathListaDeNotas = Path.GetFullPath("c:\\Users\\jcarena\\Documents\\TP2020\\ListaDeNotas.txt");
+
 
         List<Institucion> instituciones { get; set; }
         List<Hijo> hijos { get; set; }
         List<Padre> padres { get; set; }
         List<Docente> docentes { get; set; }
         List<Director> directores { get; set; }
-        List<Sala> salas { get; set; } = new List<Sala>();
+        List<Sala> salas { get; set; }
+        List<Nota> notas { get; set; }
+
 
 
         public Usuario UsuarioLogueado;
@@ -37,7 +40,9 @@ namespace Lógica
             hijos = LeerListaDeHijos();
             padres = LeerListaDePadres();
             docentes = LeerListaDeDocentes();
-            directores = LeerListaDeDirectores();            
+            directores = LeerListaDeDirectores();
+            salas = LeerListaDeSalas();
+            notas = LeerListaDeNotas();
             
             //Instituciones Ejemplo
             Institucion Institucion1 = new Institucion() { Ciudad = "Rafaela", Direccion = "España 84", Id = 1, Nombre = "UCSE", Provincia = "SF", Telefono = "4545654" };
@@ -70,7 +75,11 @@ namespace Lógica
 
             //Alumnos Ejemplos
             Hijo Hijo1 = new Hijo() { Nombre = "Damian", Apellido = "Manzo", Email = "D1", FechaNacimiento = new DateTime(1990, 05, 03), ResultadoUltimaEvaluacionAnual = 4, ID = 1, Institucion = Institucion1, Sala = Sala1 };
+            Hijo Hijo2 = new Hijo() { Nombre = "Roberto", Apellido = "Sensini", Email = "D2", FechaNacimiento = new DateTime(1940, 05, 03), ResultadoUltimaEvaluacionAnual = 8, ID = 2, Institucion = Institucion1, Sala = Sala2 };
+
             hijos.Add(Hijo1);
+            hijos.Add(Hijo2);
+
             ActualizarArchivo("Hijo");
 
             
@@ -106,6 +115,54 @@ namespace Lógica
                 }
             }
         }
+        public List<Sala> LeerListaDeSalas()
+        {
+            if (!File.Exists(pathListaDeSalas))
+            {
+                TextWriter archivo = new StreamWriter(pathListaDeSalas);
+                List<Sala> Lista = new List<Sala>();
+                archivo.Close();
+                return Lista;
+            }
+            else
+            {
+                using (StreamReader archivo = new StreamReader(pathListaDeSalas))
+                {
+                    string JsonContenido = archivo.ReadToEnd();
+                    List<Sala> Lista = JsonConvert.DeserializeObject<List<Sala>>(JsonContenido);
+
+                    archivo.Close();
+
+                    if (Lista == null)
+                        Lista = new List<Sala>();
+                    return Lista;
+                }
+            }
+        }
+        public List<Nota> LeerListaDeNotas()
+        {
+            if (!File.Exists(pathListaDeNotas))
+            {
+                TextWriter archivo = new StreamWriter(pathListaDeNotas);
+                List<Nota> Lista = new List<Nota>();
+                archivo.Close();
+                return Lista;
+            }
+            else
+            {
+                using (StreamReader archivo = new StreamReader(pathListaDeNotas))
+                {
+                    string JsonContenido = archivo.ReadToEnd();
+                    List<Nota> Lista = JsonConvert.DeserializeObject<List<Nota>>(JsonContenido);
+
+                    archivo.Close();
+
+                    if (Lista == null)
+                        Lista = new List<Nota>();
+                    return Lista;
+                }
+            }
+        }
         public List<Hijo> LeerListaDeHijos()
         {
             if (!File.Exists(pathListaDeHijos))
@@ -132,7 +189,7 @@ namespace Lógica
         }
         public List<Padre> LeerListaDePadres()
         {
-            if (!File.Exists(pathListaDeHijos))
+            if (!File.Exists(pathListaDePadres))
             {
                 TextWriter archivo = new StreamWriter(pathListaDePadres);
                 List<Padre> Lista = new List<Padre>();
@@ -156,7 +213,7 @@ namespace Lógica
         }
         public List<Docente> LeerListaDeDocentes()
         {
-            if (!File.Exists(pathListaDeHijos))
+            if (!File.Exists(pathListaDeDocentes))
             {
                 TextWriter archivo = new StreamWriter(pathListaDeDocentes);
                 List<Docente> Lista = new List<Docente>();
@@ -180,7 +237,7 @@ namespace Lógica
         }
         public List<Director> LeerListaDeDirectores()
         {
-            if (!File.Exists(pathListaDeHijos))
+            if (!File.Exists(pathListaDeDirectores))
             {
                 TextWriter archivo = new StreamWriter(pathListaDeDirectores);
                 List<Director> Lista = new List<Director>();
@@ -251,6 +308,14 @@ namespace Lógica
                     using (StreamWriter archivo = new StreamWriter(pathListaDeSalas))
                     {
                         string JsonContenido = JsonConvert.SerializeObject(salas);
+                        archivo.Write(JsonContenido);
+                        archivo.Close();
+                    }
+                    break;
+                case "Nota":
+                    using (StreamWriter archivo = new StreamWriter(pathListaDeNotas))
+                    {
+                        string JsonContenido = JsonConvert.SerializeObject(notas);
                         archivo.Write(JsonContenido);
                         archivo.Close();
                     }
@@ -577,6 +642,7 @@ namespace Lógica
                 var existe = hijos.First(x => x.ID == alumnoEditar.ID);
                 if (existe != null)
                 {
+                    alumnoEditar.Notas = hijo.Notas;
                     alumnoEditar.Sala = hijo.Sala;
                     alumnoEditar.Nombre = hijo.Nombre;
                     alumnoEditar.Apellido = hijo.Apellido;
@@ -737,13 +803,10 @@ namespace Lógica
                     throw new Exception("Inaccesible.");
                 case Roles.Directora:
                     Salas = salas;
-                    /*
-                    Director director = ConvertirDirector(usuarioLogueado);
-                    if (director.Institucion.Salas != null)
-                    {
-                        Salas = director.Institucion.Salas;
-                    }
-                    */
+
+                    Director director = ObtenerDirectorPorId(usuarioLogueado, UsuarioLogueado.ID);
+                    Salas = salas.Where(x => x.institucion.Id == director.Institucion.Id).ToList();
+
 
                     break;
             }
@@ -1216,8 +1279,10 @@ namespace Lógica
                     Padre padre = ConvertirPadre(usuarioLogueado);
                     return padre.ListaHijos.ToArray();                   
                 case Roles.Directora:
-                    Director director = ConvertirDirector(usuarioLogueado);
-                    return hijos.Where(x => x.Institucion == director.Institucion).ToArray();
+                    //var director = ObtenerDirectorPorId(usuarioLogueado, UsuarioLogueado.ID);
+                    List<Hijo> Hijos = hijos.Where(x => x.Institucion.Id == Institución.Id).ToList();
+                    return Hijos.ToArray();
+                    //return hijos.Where(x => x.Institucion == Institución).ToArray();
                 default:
                     throw new Exception("Rol no implementado");
             }
@@ -1272,8 +1337,8 @@ namespace Lógica
                         }
                     case Roles.Directora:
                         {
-                            Director director = ConvertirDirector(usuarioLogueado);
-                            if (director.Institucion == alumno.Institucion)
+                            //Director director = ConvertirDirector(usuarioLogueado);
+                            if (Institución == alumno.Institucion)
                             {
                                 foreach (var item in alumno.Notas)
                                 {
@@ -1300,10 +1365,13 @@ namespace Lógica
         public void GuardarNota(Hijo hijo, Nota nota)
         {
             var notasHijo = hijo.Notas == null ? new List<Nota>() : hijo.Notas.ToList();
-
+            nota.Id = notas.Count + 1;
+            nota.FechaEventoAsociado = DateTime.Today;                      
             notasHijo.Add(nota);
-            AltNota(new AltaNotaArgs(hijo,nota));
-            ActualizarArchivo("Hijo");
+            hijo.Notas = notasHijo;
+            //AltNota(new AltaNotaArgs(hijo,nota));
+            EditarAlumno(hijo.ID, hijo, UsuarioLogueado);
+            //ActualizarArchivo("Hijo");
         }
 
         /// <summary>
@@ -1399,14 +1467,15 @@ namespace Lógica
                     }
                 case Roles.Directora:
                     {
-                        Director director = ConvertirDirector(usuarioLogueado);
+                        //Director director = ConvertirDirector(usuarioLogueado);
                         if (hijos != null && hijos.Length > 0)
                         {
                             foreach (var item in hijos)
                             {
-                                if (director.Institucion == item.Institucion)
+                                Hijo Hijo = ObtenerAlumnoPorId(usuarioLogueado,item.ID);
+                                if (Institución == Hijo.Institucion)
                                 {
-                                    GuardarNota(item, nota);
+                                    GuardarNota(Hijo, nota);
                                 }
                                 else
                                 {
@@ -1423,7 +1492,7 @@ namespace Lógica
                             }
                             foreach (var item in alumnos)
                             {
-                                if (director.Institucion == item.Institucion)
+                                if (Institución == item.Institucion)
                                 {
                                     GuardarNota(item, nota);
                                 }
@@ -1440,13 +1509,37 @@ namespace Lógica
         }
 
 
-        public void AgregarComentario(Nota nota, Comentario nuevoComentario)
+        public void AgregarComentario(Nota nota, Comentario nuevoComentario, Hijo hijo)
         {
-            var comment = nota.Comentarios == null ? new List<Comentario>() : nota.Comentarios.ToList();
-            comment.Add(nuevoComentario);
-            ActualizarArchivo("Hijo");
-            AltComentario(new AltaComentarioArgs(nuevoComentario, nota));
+            //var comment = nota.Comentarios == null ? new List<Comentario>() : nota.Comentarios.ToList();
+            // comment.Add(nuevoComentario);
+            var NOTA = hijo.Notas.FirstOrDefault(x => x.Id == nota.Id);
+            hijo.Notas.Remove(NOTA);
+            if (NOTA.Comentarios == null)
+            {
+                List<Comentario> Comentario = new List<Comentario>();
+                Comentario.Add(nuevoComentario);
+                NOTA.Comentarios = Comentario.ToArray();
+               hijo.Notas.Add(NOTA);
+            }
+            else
+            {
+                List<Comentario> Com = NOTA.Comentarios.ToList();
+                Com.Add(nuevoComentario);
+                NOTA.Comentarios = Com.ToArray();
+                hijo.Notas.Add(NOTA);
+            }
+
+            /*
+            int cant = NOTA.Comentarios.Count();
+            NOTA.Comentarios[cant-1] = nuevoComentario;
+
             nota.Comentarios = comment.ToArray();
+            hijo.Notas.Add(nota);
+            */
+            EditarAlumno(hijo.ID, hijo, UsuarioLogueado);
+           // ActualizarArchivo("Hijo");
+           // AltComentario(new AltaComentarioArgs(nuevoComentario, nota));
         }
 
         /// <summary>
@@ -1466,7 +1559,7 @@ namespace Lógica
                     var esAlumno = docente.Salas.FirstOrDefault(x => x.alumnos.Any(y => y.Notas.Any(z => z.Id == nota.Id)));
                     if (esAlumno != null)
                     {
-                        AgregarComentario(nota, nuevoComentario);
+                       // AgregarComentario(nota, nuevoComentario, esAlumno);
                     }
                     else
                     {
@@ -1478,7 +1571,7 @@ namespace Lógica
                     var esHijo = padre.ListaHijos.First(x => x.Notas.Any(y => y.Id == nota.Id));
                     if (esHijo != null)
                     {
-                        AgregarComentario(nota, nuevoComentario);
+                        AgregarComentario(nota, nuevoComentario, esHijo);
                     }
                     else
                     {
@@ -1486,11 +1579,11 @@ namespace Lógica
                     }
                     break;
                 case Roles.Directora:
-                    Director director = usuarioLogueado as Director;
+                    //Director director = ObtenerDirectorPorId(usuarioLogueado, usuarioLogueado.ID);
                     var alumno = hijos.First(x => x.Notas.Any(y => y.Id == nota.Id));
-                    if (director.Institucion == alumno.Institucion)
+                    if (Institución == alumno.Institucion)
                     {
-                        AgregarComentario(nota, nuevoComentario);
+                        AgregarComentario(nota, nuevoComentario, alumno);
                     }
                     else
                     {
@@ -1618,7 +1711,7 @@ namespace Lógica
         /// <returns></returns>
         public Director ObtenerDirectorPorId(Usuario usuarioLogueado, int id)
         {
-            return directores.First(x => x.ID == id);
+            return directores.FirstOrDefault(x => x.ID == id);
         }
         public Sala ObtenerSalaPorId(Usuario usuarioLogueado, int id)
         {

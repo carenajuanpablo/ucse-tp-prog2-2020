@@ -24,7 +24,6 @@ namespace Servicios.Transformaciones
             Director.Apellido = director.Apellido;
             Director.Email = director.Email;
             Director.ID = director.Id;
-
             return Director;
         }
         public static Contratos.Directora ConvertirDirector(Lógica.Director director)
@@ -58,9 +57,6 @@ namespace Servicios.Transformaciones
                 }
                 Docente.Salas = salas;
             }
-
-            //FALTA INSTITUCION
-
             return Docente;
         }
         public static Contratos.Docente ConvertirDocente(Lógica.Docente docente)
@@ -79,7 +75,6 @@ namespace Servicios.Transformaciones
                 }
                 Docente.Salas = salas;
             }
-
             return Docente;
         }
         public static Lógica.Sala ConvertirSala(Contratos.Sala sala)
@@ -87,8 +82,6 @@ namespace Servicios.Transformaciones
             Lógica.Sala Sala = new Lógica.Sala();
             Sala.Id = sala.Id;
             Sala.Nombre = sala.Nombre;
-            //FALTA LISTA ALUMNOS
-
             return Sala;
         }
         public static Contratos.Sala ConvertirSala(Lógica.Sala sala)
@@ -96,8 +89,6 @@ namespace Servicios.Transformaciones
             Contratos.Sala Sala = new Contratos.Sala();
             Sala.Id = sala.Id;
             Sala.Nombre = sala.Nombre;
-            //FALTA LISTA ALUMNOS
-
             return Sala;
         }
         public static Contratos.Sala[] ConvertirSalas(Lógica.Sala[] salas)
@@ -125,8 +116,7 @@ namespace Servicios.Transformaciones
             Padre.Nombre = padre.Nombre;
             Padre.Apellido = padre.Apellido;
             Padre.Email = padre.Email;
-            Padre.ID = padre.Id;
-            
+            Padre.ID = padre.Id;            
             return Padre;
         }
         public static Contratos.Padre ConvertirPadre(Lógica.Padre padre)
@@ -185,8 +175,6 @@ namespace Servicios.Transformaciones
                 }
                 Nota.Comentarios = comentarios;
             }
-
-
             return Nota;
         }
         public static Lógica.Comentario ConvertirComentario(Contratos.Comentario comentario)
@@ -195,7 +183,6 @@ namespace Servicios.Transformaciones
             Comentario.Usuario = ConvertirUsuario(comentario.Usuario);
             Comentario.Fecha = comentario.Fecha;
             Comentario.Mensaje = comentario.Mensaje;
-
             return Comentario;
         }
         public static Contratos.Comentario ConvertirComentario(Lógica.Comentario comentario)
@@ -205,13 +192,11 @@ namespace Servicios.Transformaciones
             ConvertirUsuario(comentario.Usuario);
             Comentario.Fecha = comentario.Fecha;
             Comentario.Mensaje = comentario.Mensaje;
-
             return Comentario;
         }
         public static Lógica.Hijo ConvertirHijo(Contratos.Hijo hijo)
         {
             Lógica.Hijo Hijo = new Lógica.Hijo();
-          //  Hijo.Institucion = ConvertirInstitución(hijo.Institucion);
             Hijo.FechaNacimiento = hijo.FechaNacimiento;
             Hijo.Nombre = hijo.Nombre;
             Hijo.Apellido = hijo.Apellido;
@@ -222,7 +207,6 @@ namespace Servicios.Transformaciones
             {
                 Hijo.Sala = ConvertirSala(hijo.Sala);
             }
-
             if (hijo.Notas != null)
             {
                 List<Lógica.Nota> notas = new List<Lógica.Nota>();
@@ -232,14 +216,11 @@ namespace Servicios.Transformaciones
                 }
                 Hijo.Notas = notas;
             }
-
-
             return Hijo;
         }
         public static Contratos.Hijo ConvertirHijo(Lógica.Hijo hijo)
         {
             Contratos.Hijo Hijo = new Contratos.Hijo();
-            //Hijo.Institucion = ConvertirInstitución(hijo.Institucion);
             Hijo.FechaNacimiento = hijo.FechaNacimiento;
             Hijo.Nombre = hijo.Nombre;
             Hijo.Apellido = hijo.Apellido;
@@ -260,8 +241,7 @@ namespace Servicios.Transformaciones
                     i++;
                 }
                 Hijo.Notas = Notas;
-            }
-            
+            }            
             return Hijo;
         }
         public static Contratos.Hijo[] ConvertirHijos(Lógica.Hijo[] hijos)
@@ -272,8 +252,7 @@ namespace Servicios.Transformaciones
                 Hijos[i] = ConvertirHijo(hijos[i]);
             }
             return Hijos;
-        }
-        
+        }        
         public static Lógica.Institucion ConvertirInstitución(Contratos.Institucion institucion)
         {
             Lógica.Institucion Institución = new Lógica.Institucion();
@@ -294,12 +273,8 @@ namespace Servicios.Transformaciones
             Institución.Telefono = institucion.Telefono;
             Institución.Ciudad = institucion.Ciudad;
             Institución.Provincia = institucion.Provincia;
-            //FALTA LISTA DE SALAS
-
             return Institución;
-        }
-        
-
+        }     
         public static Contratos.Institucion[] ConvertirInstituciones(Lógica.Institucion[] instituciones)
         {
             Contratos.Institucion[] Instituciones = new Contratos.Institucion[instituciones.Length];
@@ -316,8 +291,7 @@ namespace Servicios.Transformaciones
             Usuario.Nombre = usuario.Nombre;
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
-            Usuario.ID = usuario.Id;
-            
+            Usuario.ID = usuario.Id;            
             return Usuario;
         }
         public static Lógica.Usuario ConvertirUsuario(Contratos.UsuarioLogueado usuario)
@@ -328,10 +302,8 @@ namespace Servicios.Transformaciones
             Usuario.Email = usuario.Email;
             Usuario.Roles = ConvertirRoles(usuario);
             Usuario.RolSeleccionado = ConvertirRolSeleccionado(usuario.RolSeleccionado);
-
             return Usuario;
-        }
-        
+        }        
         public static Contratos.UsuarioLogueado ConvertirUsuarioLogueado(Lógica.Usuario usuario)
         {
             Contratos.UsuarioLogueado Usuario = new Contratos.UsuarioLogueado();
@@ -361,23 +333,15 @@ namespace Servicios.Transformaciones
         {
             Contratos.Grilla<Directora> GrillaDir = new Contratos.Grilla<Directora>();
             Directora[] Dir = new Directora[directores.CantidadRegistros];
-            /*
-            for (int i = 0; i < directores.CantidadRegistros; i++)
-            {
-                GrillaDir.Lista[i] = ConvertirDirector(directores.Lista[i]);
-            }
-            */
             int i = 0;
             foreach (var item in directores.Lista)
             {
                 Dir[i] = ConvertirDirector(item);
-                //GrillaDir.Lista[i] = ConvertirDirector(item);
                 i = i +1;
             }
             GrillaDir.Lista = Dir;
             GrillaDir.CantidadRegistros = directores.CantidadRegistros;
             return GrillaDir;
-
         }        
         public static Contratos.Grilla<Contratos.Docente> ConvertirGrillaDocentes(Grilla<Lógica.Docente> docentes)
         {
@@ -431,8 +395,6 @@ namespace Servicios.Transformaciones
             Usuario.Apellido = usuario.Apellido;
             Usuario.Email = usuario.Email;
             Usuario.Id = usuario.ID;    
-          
-            //REVISAR ROLES, ROLSELECCIONADO
             return Usuario;
         }
         
